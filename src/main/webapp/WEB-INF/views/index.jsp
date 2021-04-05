@@ -11,6 +11,36 @@
     <title>Title</title>
 </head>
 <body>
-Witamy w systemie zarządzania transportem
+<table border="1" bgcolor="#5f9ea0">
+    <thead>
+    <th width="1400" height="150">
+        <h1><span>System zarządzania transportem</span></h1>
+    </th>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <a href="${pageContext.request.contextPath}/user/data/truck/all">
+                <h2><span>Dane transportowe</span></h2>
+            </a>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <a href="${pageContext.request.contextPath}/user/order">
+                <h2><span>Zlecenia transportowe</span></h2>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="${pageContext.request.contextPath}/admin/permission/all" r>
+                <h2><span>Użytkownicy</span></h2>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

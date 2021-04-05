@@ -10,8 +10,20 @@ public class HomeController {
 
 
     @GetMapping("")
-    String showIndex(){
+    String showIndex() {
         return "index";
     }
+
+
+    @GetMapping("/user/data")
+    String showData() {
+        return "transport_data";
+    }
+
+    @GetMapping("/user/order")
+    String showOrders() {
+        return "transport_orders";
+    }
+
 
 }
