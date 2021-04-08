@@ -4,8 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table(name="trucks")
-public class Truck {
+@Table(name="semitrailers")
+public class Semitrailer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,19 +17,17 @@ public class Truck {
     @Min(1980)
     @Max(2021)//tu dodać aktualny rok
     private Long productionYear;
-    @Min(20)
-    @Max(50)
-    private Double fuelConsumption;
+    @NotEmpty
+    private String type;
 
-    public Truck(@Size(min = 7, max = 7) String registerNumber, @NotEmpty String brand, @Min(1980) @Max(2021) Long productionYear, @Min(20) @Max(50) Double fuelConsumption) {
+    public Semitrailer(@Size(min = 7, max = 7) String registerNumber, @NotEmpty String brand, @Min(1980) @Max(2021) Long productionYear, @NotEmpty String type) {
         this.registerNumber = registerNumber;
         this.brand = brand;
         this.productionYear = productionYear;
-        this.fuelConsumption = fuelConsumption;
+        this.type = type;
     }
 
-
-    public Truck(){};
+    public Semitrailer(){};
 
     public Long getId() {
         return id;
@@ -62,22 +61,22 @@ public class Truck {
         this.productionYear = productionYear;
     }
 
-    public Double getFuelConsumption() {
-        return fuelConsumption;
+    public String getType() {
+        return type;
     }
 
-    public void setFuelConsumption(Double fuelConsumption) {
-        this.fuelConsumption = fuelConsumption;
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
     public String toString() {
-        return "Truck{" +
+        return "Semitrailer{" +
                 "id=" + id +
                 ", registerNumber='" + registerNumber + '\'' +
                 ", brand='" + brand + '\'' +
                 ", productionYear=" + productionYear +
-                ", fuelConsumption=" + fuelConsumption +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

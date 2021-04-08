@@ -6,7 +6,7 @@
 <table border="1">
     <thead>
     <th width="1406" bgcolor="olive">
-        <span>Menu ciągniki</span>
+        <span>Menu przewożony ładunek</span>
     </th>
     </thead>
 </table>
@@ -16,11 +16,11 @@
     <%@ include file="headerData.jsp"%>
 
     <th width="1200">
-        <p><span>Edycja danych ciągnika</span></p>
-        <c:url var="editTruckUrl" value="/user/data/truck/edit"/>
-        <form:form method="post" modelAttribute="editTruck" action="${editTruckUrl}">
+        <p><span>Edycja danych kierowcy</span></p>
+        <c:url var="editCargoUrl" value="/user/data/cargo/edit"/>
+        <form:form method="post" modelAttribute="editCargo" action="${editCargoUrl}">
 
-            <%@ include file="truckFormHeader.jsp"%>
+            <%@ include file="cargoFormHeader.jsp"%>
 
             <p><input type="submit" value="Zmień"/></p>
         </form:form>

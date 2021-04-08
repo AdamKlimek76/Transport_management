@@ -2,6 +2,7 @@ package pl.coderslab.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -16,16 +17,16 @@ public class User {
     private String login;
     @Size(min = 8)
     private String password;
-    @NotNull
+    @NotEmpty
     private String firstName;
-    @NotNull
+    @NotEmpty
     private String lastName;
-    @NotNull
+    @NotEmpty
     private String position;
-    @NotNull
+    @NotEmpty
     private String role;
 
-    public User(@Email String login, @Size(min = 8) String password, @NotNull String firstName, @NotNull String lastName, @NotNull String position, @NotNull String role) {
+    public User(@Email String login, @Size(min = 8) String password, @NotEmpty String firstName, @NotEmpty String lastName, @NotEmpty String position, @NotEmpty String role) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;

@@ -6,7 +6,7 @@
 <table border="1">
     <thead>
     <th width="1406" bgcolor="olive">
-        <span>Menu ciągniki</span>
+        <span>Menu naczepy</span>
     </th>
     </thead>
 </table>
@@ -16,11 +16,11 @@
     <%@ include file="headerData.jsp"%>
 
     <th width="1200">
-        <p><span>Edycja danych ciągnika</span></p>
-        <c:url var="editTruckUrl" value="/user/data/truck/edit"/>
-        <form:form method="post" modelAttribute="editTruck" action="${editTruckUrl}">
+        <p><span>Edycja danych naczepy</span></p>
+        <c:url var="editSemitrailerUrl" value="/user/data/semitrailer/edit"/>
+        <form:form method="post" modelAttribute="editSemitrailer" action="${editSemitrailerUrl}">
 
-            <%@ include file="truckFormHeader.jsp"%>
+            <%@ include file="semitrailerFormHeader.jsp"%>
 
             <p><input type="submit" value="Zmień"/></p>
         </form:form>
