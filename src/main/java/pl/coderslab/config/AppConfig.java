@@ -24,6 +24,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import javax.persistence.EntityManagerFactory;
 import javax.validation.Validator;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 
@@ -89,7 +90,7 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
-        stringConverter.setSupportedMediaTypes(List.of(new MediaType("text", "plain", Charset.forName("UTF-8"))));
+        stringConverter.setSupportedMediaTypes(List.of(new MediaType("text", "plain", StandardCharsets.UTF_8)));
         converters.add(stringConverter);
     }
 

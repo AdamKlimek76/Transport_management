@@ -22,7 +22,7 @@
             <table>
                 <thead>
                 <th width="300">
-                    <a href="${pageContext.request.contextPath}/user/data">
+                    <a href="${pageContext.request.contextPath}/user/data/truck/all">
                         <span>Dane transportowe</span>
                     </a>
                 </th>
@@ -32,7 +32,7 @@
                     </a>
                 </th>
                 <th width="300">
-                    <a href="${pageContext.request.contextPath}/admin/permission" r>
+                    <a href="${pageContext.request.contextPath}/admin/permission/all" r>
                         <span>Użytkownicy</span>
                     </a>
                 </th>
