@@ -91,6 +91,12 @@ public class OrderController {
         return "orderDetails";
     }
 
+    @GetMapping("/book/{id}")
+    @ResponseBody
+    public String showOrderBookingForm(@PathVariable Long id, Model model){
+        return "Awizacja";
+    }
+
     @ModelAttribute("loadingPlaces")
     public List<LoadingPlace> loadingPlaces() {
         return loadingPlaceService.showAll();
