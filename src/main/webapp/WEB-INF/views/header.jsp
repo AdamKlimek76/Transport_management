@@ -27,7 +27,7 @@
                     </a>
                 </th>
                 <th width="300">
-                    <a href="${pageContext.request.contextPath}/user/order">
+                    <a href="${pageContext.request.contextPath}/user/order/newOrder/all">
                         <span>Zlecenia transportowe</span>
                     </a>
                 </th>

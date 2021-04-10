@@ -22,15 +22,4 @@ public class HomeController {
     }
 
 
-    @GetMapping("/user/data")
-    String showData() {
-        return "transport_data";
-    }
-
-    @GetMapping("/user/order")
-    String showOrders() {
-        return "transport_orders";
-    }
-
-
 }

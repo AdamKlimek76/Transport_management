@@ -6,7 +6,7 @@
 <table border="1">
     <thead>
     <th width="1406" bgcolor="olive">
-        <span>Menu miejsca załadunku</span>
+        <span>Menu nowe zamówienia</span>
     </th>
     </thead>
 </table>
@@ -16,11 +16,11 @@
     <%@ include file="headerOrder.jsp"%>
 
     <th width="1200">
-        <p><span>Edycja danych miejsc załadunku</span></p>
-        <c:url var="editLoadingPlacerUrl" value="/user/data/loadingPlace/edit"/>
-        <form:form method="post" modelAttribute="editLoadingPlace" action="${editLoadingPlacerUrl}">
+        <p><span>Edycja danych nowych zamówień</span></p>
+        <c:url var="editNewOrderrUrl" value="/user/order/newOrder/edit"/>
+        <form:form method="post" modelAttribute="editNewOrder" action="${editNewOrderrUrl}">
 
-            <%@ include file="loadingPlaceFormHeader.jsp"%>
+            <%@ include file="newOrderFormHeader.jsp"%>
 
             <p><input type="submit" value="Zmień"/></p>
         </form:form>
