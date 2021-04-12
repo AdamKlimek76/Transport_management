@@ -19,6 +19,10 @@
         <p><span>Edycja danych nowych zamówień</span></p>
         <c:url var="editNewOrderrUrl" value="/user/order/newOrder/edit"/>
         <form:form method="post" modelAttribute="editNewOrder" action="${editNewOrderrUrl}">
+            
+            <form:hidden path="status"/>
+            <form:hidden path="orderNumber"/>
+            <form:hidden path="created"/>
 
             <%@ include file="newOrderFormHeader.jsp"%>
 

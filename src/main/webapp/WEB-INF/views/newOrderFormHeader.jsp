@@ -2,9 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <form:hidden path="id" />
-<form:hidden path="status"/>
-<form:hidden path="orderNumber"/>
-<form:hidden path="created"/>
+
 <p>Data dostawy: <form:input path="deliveryDate"/></p>
 <form:errors path="deliveryDate" cssClass="error"/>
 

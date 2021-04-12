@@ -36,30 +36,13 @@
                 </p>
                 <p>Data: ${orderDetails.deliveryDate}</p>
                 <p>Godzina: ${orderDetails.deliveryHour}</p>
-
             </th>
             </thead>
         </table>
         <table border="1">
             <thead>
             <th width="1106">
-                <span>Przewożony ładunek: ${orderDetails.cargo.name}</span>
-            </th>
-            </thead>
-        </table>
-        <table border="1">
-            <thead>
-            <th width="550">
-                <span>Kierowca</span>
-                <p>Imię: ${orderDetails.driver.firstName}</p>
-                <p>Nazwisko: ${orderDetails.driver.lastName}</p>
-                <p>Nr telefonu: ${orderDetails.driver.phoneNumber}</p>
-            </th>
-            <th width="550">
-                <span>Pojazd</span>
-                <p>Nr rejestracyjny ciągnika: ${orderDetails.truck.registerNumber}</p>
-                <p>Nr rejestracyjny naczepy: ${orderDetails.semitrailer.registerNumber}</p>
-                <p>Typ naczepy: ${orderDetails.semitrailer.type}</p>
+                <p>Przewożony ładunek: ${orderDetails.cargo.name}</p>
             </th>
             </thead>
         </table>

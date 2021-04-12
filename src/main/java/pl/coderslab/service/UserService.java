@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements MethodsService<User> {
+public class UserService implements CrudService<User> {
 
     private final UserRepository userRepository;
 

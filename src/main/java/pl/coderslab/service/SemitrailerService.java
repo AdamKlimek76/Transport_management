@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SemitrailerService implements MethodsService<Semitrailer> {
+public class SemitrailerService implements CrudService<Semitrailer> {
 
     private final SemitrailerRepository semitrailerRepository;
 

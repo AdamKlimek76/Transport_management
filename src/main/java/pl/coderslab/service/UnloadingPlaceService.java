@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UnloadingPlaceService implements MethodsService<UnloadingPlace>{
+public class UnloadingPlaceService implements CrudService<UnloadingPlace> {
 
     private final UnloadingPlaceRepository unloadingPlaceRepository;
 

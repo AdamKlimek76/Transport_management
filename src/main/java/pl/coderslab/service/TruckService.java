@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TruckService implements MethodsService<Truck> {
+public class TruckService implements CrudService<Truck> {
 
     private final TruckRepository truckRepository;
 

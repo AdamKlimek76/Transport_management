@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface MethodsService<T> {
+public interface CrudService<T> {
 
     void add(T t);
 

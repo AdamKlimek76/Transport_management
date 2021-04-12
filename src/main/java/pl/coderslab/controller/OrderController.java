@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.dto.OrderDtoNew;
+import pl.coderslab.dtoread.OrderDtoReadNew;
 import pl.coderslab.model.Cargo;
 import pl.coderslab.model.LoadingPlace;
 import pl.coderslab.model.Order;
@@ -37,26 +39,24 @@ public class OrderController {
 
     @GetMapping("/all")
     public String showAllNewOrders(Model model) {
-        List<Order> newOrders = orderService.showAll();
+        List<OrderDtoReadNew> newOrders = orderService.showAllNewOrders();
         model.addAttribute("newOrders", newOrders);
         return "newOrderAll";
     }
 
     @GetMapping("/add")
     String showAddNewOrderForm(Model model) {
-        model.addAttribute("newOrder", new Order());
+        model.addAttribute("newOrder", new OrderDtoNew());
         return "newOrderFormAdd";
     }
 
     @PostMapping("/add")
-    public String addNewOrder(@Valid Order newOrder, BindingResult bindingResult) {
+    public String addNewOrder(@Valid OrderDtoNew newOrder, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "newOrderFormAdd";
         }
-        orderService.add(newOrder);
-        newOrder.setOrderNumber(orderService.generateNewOrderNumber());
-        orderService.update(newOrder);
+        orderService.addNewOrder(newOrder);
         return "redirect: all";
     }
 
@@ -69,12 +69,12 @@ public class OrderController {
 
     @PostMapping("/edit")
     public String editNewOrder(@ModelAttribute("editNewOrder")
-                               @Valid Order editNewOrder, BindingResult bindingResult) {
+                               @Valid OrderDtoReadNew editNewOrder, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "newOrderEdit";
         }
-        orderService.add(editNewOrder);
+        orderService.updateNewOrder(editNewOrder);
         return "redirect: all";
     }
 
@@ -86,9 +86,9 @@ public class OrderController {
 
     @GetMapping("/detail/{id}")
     public String showOrderDetails(@PathVariable Long id, Model model){
-        Order order = orderService.showById(id).orElseThrow(EntityExistsException::new);
+        OrderDtoReadNew order = orderService.showNewOrderById(id).orElseThrow(EntityExistsException::new);
         model.addAttribute("orderDetails", order);
-        return "orderDetails";
+        return "newOrderDetails";
     }
 
     @GetMapping("/book/{id}")

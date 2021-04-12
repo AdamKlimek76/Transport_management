@@ -1,23 +1,18 @@
-package pl.coderslab.model;
+package pl.coderslab.dtoread;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
+import pl.coderslab.model.Cargo;
+import pl.coderslab.model.LoadingPlace;
+import pl.coderslab.model.UnloadingPlace;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@Entity
-@Table(name = "orders")
-public class Order {
+public class OrderDtoReadNew {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String orderNumber;
 
     private String status;
 
@@ -25,6 +20,7 @@ public class Order {
 
     private LocalDateTime updated;
 
+    private String orderNumber;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deliveryDate;
@@ -38,29 +34,22 @@ public class Order {
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime loadingHour;
 
-    @ManyToOne
+    @NotNull
     private LoadingPlace loadingPlace;
 
-    @ManyToOne
+    @NotNull
     private UnloadingPlace unloadingPlace;
 
-    @ManyToOne
+    @NotNull
     private Cargo cargo;
 
-    @ManyToOne
-    private Driver driver;
 
-    @ManyToOne
-    private Truck truck;
-
-    @ManyToOne
-    private Semitrailer semitrailer;
-
-    public Order(String orderNumber, String status, LocalDateTime created, LocalDateTime updated, LocalDate deliveryDate, LocalTime deliveryHour, LocalDate loadingDate, LocalTime loadingHour, LoadingPlace loadingPlace, UnloadingPlace unloadingPlace, Cargo cargo, Driver driver, Truck truck, Semitrailer semitrailer) {
-        this.orderNumber = orderNumber;
+    public OrderDtoReadNew(Long id, String status, LocalDateTime created, LocalDateTime updated, String orderNumber, LocalDate deliveryDate, LocalTime deliveryHour, LocalDate loadingDate, LocalTime loadingHour, LoadingPlace loadingPlace, UnloadingPlace unloadingPlace, Cargo cargo) {
+        this.id = id;
         this.status = status;
         this.created = created;
         this.updated = updated;
+        this.orderNumber = orderNumber;
         this.deliveryDate = deliveryDate;
         this.deliveryHour = deliveryHour;
         this.loadingDate = loadingDate;
@@ -68,12 +57,9 @@ public class Order {
         this.loadingPlace = loadingPlace;
         this.unloadingPlace = unloadingPlace;
         this.cargo = cargo;
-        this.driver = driver;
-        this.truck = truck;
-        this.semitrailer = semitrailer;
     }
 
-    public Order(){};
+    public OrderDtoReadNew(){};
 
     public Long getId() {
         return id;
@@ -91,12 +77,12 @@ public class Order {
         this.status = status;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
+    public String getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public LocalDate getDeliveryDate() {
@@ -155,36 +141,12 @@ public class Order {
         this.cargo = cargo;
     }
 
-    public Driver getDriver() {
-        return driver;
+    public LocalDateTime getCreated() {
+        return created;
     }
 
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
-    public Truck getTruck() {
-        return truck;
-    }
-
-    public void setTruck(Truck truck) {
-        this.truck = truck;
-    }
-
-    public Semitrailer getSemitrailer() {
-        return semitrailer;
-    }
-
-    public void setSemitrailer(Semitrailer semitrailer) {
-        this.semitrailer = semitrailer;
-    }
-
-    public String getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 
     public LocalDateTime getUpdated() {
@@ -193,26 +155,5 @@ public class Order {
 
     public void setUpdated(LocalDateTime updated) {
         this.updated = updated;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", orderNumber='" + orderNumber + '\'' +
-                ", status='" + status + '\'' +
-                ", created=" + created +
-                ", deliveryDate=" + deliveryDate +
-                ", deliveryHour=" + deliveryHour +
-                ", loadingDate=" + loadingDate +
-                ", loadingHour=" + loadingHour +
-                ", loadingPlace=" + loadingPlace +
-                ", unloadingPlace=" + unloadingPlace +
-                ", cargo=" + cargo +
-                ", driver=" + driver +
-                ", truck=" + truck +
-                ", semitrailer=" + semitrailer +
-                '}';
     }
 }

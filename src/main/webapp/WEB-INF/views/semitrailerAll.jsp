@@ -22,7 +22,8 @@
             <th width="150" bgcolor="gray"><span>Marka</span></th>
             <th width="150" bgcolor="gray"><span>Rok produkcji</span></th>
             <th width="150" bgcolor="gray"><span>Typ naczepy</span></th>
-
+            <th width="150" bgcolor="gray"><span>Edycja</span></th>
+            <th width="150" bgcolor="gray"><span>Usuwanie</span></th>
             </thead>
             <tbody>
             <c:forEach items="${semitrailers}" var="semitrailer">
