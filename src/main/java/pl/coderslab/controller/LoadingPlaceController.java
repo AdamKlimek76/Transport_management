@@ -45,7 +45,7 @@ public class LoadingPlaceController {
 
     @GetMapping("/edit/{id}")
     public String editLoadingPlace(@PathVariable Long id, Model model) {
-        LoadingPlace editLoadingPlace = loadingPlaceService.showById(id).orElseThrow();
+        LoadingPlace editLoadingPlace = loadingPlaceService.showById(id);
         model.addAttribute("editLoadingPlace", editLoadingPlace);
         return "loadingPlaceEdit";
     }

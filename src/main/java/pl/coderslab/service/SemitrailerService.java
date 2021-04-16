@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.model.Semitrailer;
 import pl.coderslab.repository.SemitrailerRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,8 @@ public class SemitrailerService implements CrudService<Semitrailer> {
     }
 
     @Override
-    public Optional<Semitrailer> showById(long id) {
-        return semitrailerRepository.findById(id);
+    public Semitrailer showById(long id) {
+
+        return semitrailerRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 }

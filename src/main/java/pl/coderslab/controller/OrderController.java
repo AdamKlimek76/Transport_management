@@ -62,7 +62,7 @@ public class OrderController {
 
     @GetMapping("/edit/{id}")
     public String editNewOrder(@PathVariable Long id, Model model) {
-        Order editNewOrder = orderService.showById(id).orElseThrow(EntityExistsException::new);
+        Order editNewOrder = orderService.showById(id);
         model.addAttribute("editNewOrder", editNewOrder);
         return "newOrderEdit";
     }

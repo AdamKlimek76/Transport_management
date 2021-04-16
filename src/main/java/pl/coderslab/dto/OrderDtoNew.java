@@ -17,6 +17,7 @@ public class OrderDtoNew {
 
     private String status;
 
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deliveryDate;
 

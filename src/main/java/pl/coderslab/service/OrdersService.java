@@ -6,7 +6,7 @@ import pl.coderslab.dtoread.OrderDtoReadNew;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderServiceMethods {
+public interface OrdersService {
 
     void addNewOrder(OrderDtoNew newOrder);
 

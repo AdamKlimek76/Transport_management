@@ -5,16 +5,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import pl.coderslab.model.Cargo;
 import pl.coderslab.repository.CargoRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -37,7 +39,7 @@ public class CargoServiceTest {
         given(cargoRepository.findById(cargo.getId())).willReturn(Optional.of(cargo));
 
         cargoService.add(cargo);
-        Cargo cargo1=cargoService.showById(10L).orElseThrow();
+        Cargo cargo1=cargoService.showById(10L);
         Assertions.assertThat(cargo1.getName()).isEqualTo("woda");
 
     }
@@ -54,8 +56,23 @@ public class CargoServiceTest {
         cargo.setName("melasa");
 
         cargoService.update(cargo);
-        Cargo cargo1=cargoService.showById(100L).orElseThrow();
+        Cargo cargo1=cargoService.showById(100L);
         Assertions.assertThat(cargo1.getName()).isEqualTo("melasa");
+
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void shouldNotUpadateIfDoesntExist(){
+        Cargo cargo = new Cargo();
+        cargo.setId(1L);
+        cargo.setName("cukier");
+
+        when(cargoRepository.save(cargo)).thenReturn(cargo);
+
+        cargoService.add(cargo);
+        cargo.setName("melasa");
+        cargoService.delete(1L);
+        cargoService.update(cargo);
 
     }
 
@@ -104,7 +121,31 @@ public class CargoServiceTest {
         verify(cargoRepository).findAll();
     }
 
+
     @Test
-    public void showById() {
+    public void ShouldShowById() {
+        Cargo cargo = new Cargo();
+        cargo.setId(1L);
+
+        when(cargoRepository.save(cargo)).thenReturn(cargo);
+        when(cargoRepository.findById(1L)).thenReturn(Optional.of(cargo));
+
+        cargoService.add(cargo);
+        Cargo expectedCargo = cargoService.showById(1L);
+
+        assertSame(cargo, expectedCargo);
+
+    }
+
+
+    @Test(expected = EntityNotFoundException.class)
+    public void shouldThrowExeptionWhenIdDoesntExist() {
+        Cargo cargo = new Cargo();
+        cargo.setId(1L);
+
+        given(cargoRepository.findById(2L)).willReturn(Optional.ofNullable(null));
+
+        Cargo expectedCargo = cargoService.showById(2L);
+
     }
 }

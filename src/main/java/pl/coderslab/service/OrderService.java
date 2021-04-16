@@ -1,5 +1,7 @@
 package pl.coderslab.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.coderslab.dto.OrderDtoNew;
 import pl.coderslab.dtoread.OrderDtoReadNew;
@@ -8,17 +10,18 @@ import pl.coderslab.repository.OrderRepository;
 
 import javax.persistence.EntityExistsException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class OrderService implements CrudService<Order>, OrderServiceMethods {
+public class OrderService implements CrudService<Order>, OrdersService {
 
 
     private final OrderRepository orderRepository;
     private final NewOrderNumberGenerator newOrderNumberGenerator;
+
+    private final static Logger log= LoggerFactory.getLogger(OrderService.class);
 
     public OrderService(OrderRepository orderRepository, NewOrderNumberGenerator newOrderNumberGenerator) {
         this.orderRepository = orderRepository;
@@ -27,12 +30,12 @@ public class OrderService implements CrudService<Order>, OrderServiceMethods {
 
 
     @Override
-    public void add(Order order) {
+    public void add(Order order) throws RuntimeException{
 
     }
 
     @Override
-    public void update(Order newOrder) {
+    public void update(Order newOrder) throws RuntimeException {
 
     }
 
@@ -49,8 +52,8 @@ public class OrderService implements CrudService<Order>, OrderServiceMethods {
     }
 
     @Override
-    public Optional<Order> showById(long id) {
-        return orderRepository.findById(id);
+    public Order showById(long id) {
+        return orderRepository.findById(id).orElseThrow(EntityExistsException::new);
     }
 
 
@@ -67,9 +70,10 @@ public class OrderService implements CrudService<Order>, OrderServiceMethods {
         orderToAdd.setUnloadingPlace(newOrder.getUnloadingPlace());
         orderToAdd.setCargo(newOrder.getCargo());
         orderRepository.save(orderToAdd);
+        log.info(orderToAdd.getId().toString());
         orderToAdd.setOrderNumber(newOrderNumberGenerator.generateNewOrderNumber());
-        orderToAdd.setId(newOrderNumberGenerator.showIdOfNewOrder());
         orderRepository.save(orderToAdd);
+        log.info(orderToAdd.getId().toString());
 
     }
 
@@ -96,7 +100,7 @@ public class OrderService implements CrudService<Order>, OrderServiceMethods {
     @Override
     public List<OrderDtoReadNew> showAllNewOrders() {
 
-        return orderRepository.findNewOrders()
+        return orderRepository.findAllByStatus("nowe")
                 .stream()
                 .map(entity -> new OrderDtoReadNew(
                         entity.getId(),

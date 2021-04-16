@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.model.Truck;
 import pl.coderslab.repository.TruckRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +39,9 @@ public class TruckService implements CrudService<Truck> {
     }
 
     @Override
-    public Optional<Truck> showById(long id) {
-        return truckRepository.findById(id);
+    public Truck showById(long id) {
+
+        return truckRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
 }

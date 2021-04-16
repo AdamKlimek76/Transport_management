@@ -11,6 +11,7 @@ import pl.coderslab.model.Cargo;
 import pl.coderslab.model.Driver;
 import pl.coderslab.repository.DriverRepository;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +44,8 @@ public class DriverServiceTest {
         given(driverRepository.findById(driver.getId())).willReturn(Optional.of(driver));
 
         driverService.add(driver);
-        Driver driver1 = driverService.showById(1L).orElseThrow();
-        //Assertions.assertThat(driver1.getFirstName()).isEqualTo("Adam");
-        assertSame(driver, driver1);
+        Driver addedDriver = driverService.showById(1L);
+        assertSame(driver, addedDriver);
     }
 
     @Test
@@ -63,9 +63,9 @@ public class DriverServiceTest {
         driver.setLastName("Klimek");
 
         driverService.update(driver);
-        Driver driver1 = driverService.showById(1L).orElseThrow();
-        Assertions.assertThat(driver.getFirstName()).isEqualTo("Ewelina");
-        Assertions.assertThat(driver.getLastName()).isEqualTo("Klimek");
+        Driver updatedDriver = driverService.showById(1L);
+        Assertions.assertThat(updatedDriver.getFirstName()).isEqualTo("Ewelina");
+        Assertions.assertThat(updatedDriver.getLastName()).isEqualTo("Klimek");
 
     }
 
@@ -87,7 +87,7 @@ public class DriverServiceTest {
     }
 
     @Test
-    public void showAll() {
+    public void shouldShowAll() {
         List<Driver> drivers = new ArrayList<>();
         Driver driver = new Driver();
         Driver driver1 = new Driver();
@@ -98,14 +98,37 @@ public class DriverServiceTest {
 
         given(driverRepository.findAll()).willReturn(drivers);
 
-        List<Driver> expected = driverService.showAll();
+        List<Driver> expectedDrivers = driverService.showAll();
 
-        assertEquals(expected, drivers);
+        assertEquals(expectedDrivers, drivers);
 
-        //verify(driverRepository).findAll();
     }
 
     @Test
-    public void showById() {
+    public void ShouldShowById() {
+        Driver driver1 = new Driver();
+        Driver driver2=new Driver();
+
+        given(driverRepository.findById(1L)).willReturn(Optional.of(driver1));
+        given(driverRepository.findById(2L)).willReturn(Optional.of(driver2));
+
+        Driver expectedDriver1 = driverService.showById(1L);
+        Driver expectedDriver2 = driverService.showById(2L);
+
+        assertSame(driver1, expectedDriver1);
+        assertSame(driver2, expectedDriver2);
+    }
+
+
+    @Test(expected = EntityNotFoundException.class)
+    public void shouldThrowExeptionWhenIdDoesntExist() {
+        Driver driver1 = new Driver();
+        Driver driver2=new Driver();
+
+        given(driverRepository.findById(1L)).willReturn(Optional.of(driver1));
+        given(driverRepository.findById(2L)).willReturn(Optional.of(driver2));
+
+        Driver expectedDriver1 = driverService.showById(3L);
+
     }
 }

@@ -7,11 +7,11 @@ import pl.coderslab.repository.OrderRepository;
 import javax.persistence.EntityExistsException;
 
 @Component
-public class NewOrderNumberGeneratorZL implements NewOrderNumberGenerator {
+public class NewOrderNumberGeneratorStartsWithZL implements NewOrderNumberGenerator {
 
     private final OrderRepository orderRepository;
 
-    public NewOrderNumberGeneratorZL(OrderRepository orderRepository) {
+    public NewOrderNumberGeneratorStartsWithZL(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 

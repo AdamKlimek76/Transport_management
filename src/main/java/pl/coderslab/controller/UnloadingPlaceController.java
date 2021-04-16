@@ -45,7 +45,7 @@ public class UnloadingPlaceController {
 
     @GetMapping("/edit/{id}")
     public String editUnloadingPlace(@PathVariable Long id, Model model) {
-        UnloadingPlace editUnloadingPlace = unloadingPlaceService.showById(id).orElseThrow();
+        UnloadingPlace editUnloadingPlace = unloadingPlaceService.showById(id);
         model.addAttribute("editUnloadingPlace", editUnloadingPlace);
         return "unloadingPlaceEdit";
     }

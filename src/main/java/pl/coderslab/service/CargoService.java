@@ -5,6 +5,7 @@ import pl.coderslab.model.Cargo;
 import pl.coderslab.repository.CargoRepository;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class CargoService implements CrudService<Cargo> {
     }
 
     @Override
-    public Optional<Cargo> showById(long id) {
-        return cargoRepository.findById(id);
+    public Cargo showById(long id) {
+      return  Optional.ofNullable(cargoRepository.findById(id).orElseThrow(EntityNotFoundException::new)).orElseThrow();
     }
 }

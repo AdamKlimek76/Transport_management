@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.model.UnloadingPlace;
 import pl.coderslab.repository.UnloadingPlaceRepository;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,8 @@ public class UnloadingPlaceService implements CrudService<UnloadingPlace> {
     }
 
     @Override
-    public Optional<UnloadingPlace> showById(long id) {
-        return unloadingPlaceRepository.findById(id);
+    public UnloadingPlace showById(long id) {
+
+        return unloadingPlaceRepository.findById(id).orElseThrow(EntityExistsException::new);
     }
 }
