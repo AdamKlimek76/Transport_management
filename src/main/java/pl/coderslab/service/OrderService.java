@@ -9,6 +9,7 @@ import pl.coderslab.model.Order;
 import pl.coderslab.repository.OrderRepository;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class OrderService implements CrudService<Order>, OrdersService {
     private final OrderRepository orderRepository;
     private final NewOrderNumberGenerator newOrderNumberGenerator;
 
-    private final static Logger log= LoggerFactory.getLogger(OrderService.class);
+    private final static Logger log = LoggerFactory.getLogger(OrderService.class);
 
     public OrderService(OrderRepository orderRepository, NewOrderNumberGenerator newOrderNumberGenerator) {
         this.orderRepository = orderRepository;
@@ -30,7 +31,7 @@ public class OrderService implements CrudService<Order>, OrdersService {
 
 
     @Override
-    public void add(Order order) throws RuntimeException{
+    public void add(Order order) throws RuntimeException {
 
     }
 
@@ -41,7 +42,7 @@ public class OrderService implements CrudService<Order>, OrdersService {
 
     @Override
     public void delete(long id) {
-        orderRepository.findById(id).orElseThrow(EntityExistsException::new);
+        orderRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         orderRepository.deleteById(id);
 
     }
@@ -53,7 +54,8 @@ public class OrderService implements CrudService<Order>, OrdersService {
 
     @Override
     public Order showById(long id) {
-        return orderRepository.findById(id).orElseThrow(EntityExistsException::new);
+        return orderRepository.findById(id).
+                orElseThrow(EntityNotFoundException::new);
     }
 
 
@@ -70,10 +72,9 @@ public class OrderService implements CrudService<Order>, OrdersService {
         orderToAdd.setUnloadingPlace(newOrder.getUnloadingPlace());
         orderToAdd.setCargo(newOrder.getCargo());
         orderRepository.save(orderToAdd);
-        log.info(orderToAdd.getId().toString());
         orderToAdd.setOrderNumber(newOrderNumberGenerator.generateNewOrderNumber());
         orderRepository.save(orderToAdd);
-        log.info(orderToAdd.getId().toString());
+        //log.info(orderToAdd.getId().toString());
 
     }
 

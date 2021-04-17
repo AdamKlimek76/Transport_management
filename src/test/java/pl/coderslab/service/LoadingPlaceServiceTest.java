@@ -123,7 +123,7 @@ public class LoadingPlaceServiceTest {
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void shouldShowExeptionIfEntityDoesntExist(){
+    public void shouldShowExceptionIfEntityDoesntExist(){
         LoadingPlace loadingPlace = new LoadingPlace();
 
         given(loadingPlaceRepositoryMock.findById(1L)).willReturn(Optional.ofNullable(null));

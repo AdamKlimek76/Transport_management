@@ -139,7 +139,7 @@ public class CargoServiceTest {
 
 
     @Test(expected = EntityNotFoundException.class)
-    public void shouldThrowExeptionWhenIdDoesntExist() {
+    public void shouldThrowExceptionWhenIdDoesntExist() {
         Cargo cargo = new Cargo();
         cargo.setId(1L);
 

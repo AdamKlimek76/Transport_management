@@ -109,7 +109,7 @@ public class TruckServiceTest {
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void shouldShowExeptionsWhenIdDoesntExist(){
+    public void shouldShowExceptionsWhenIdDoesntExist(){
         Truck truck = new Truck();
         truck.setId(10L);
 

@@ -121,7 +121,7 @@ public class DriverServiceTest {
 
 
     @Test(expected = EntityNotFoundException.class)
-    public void shouldThrowExeptionWhenIdDoesntExist() {
+    public void shouldThrowExceptionWhenIdDoesntExist() {
         Driver driver1 = new Driver();
         Driver driver2=new Driver();
 

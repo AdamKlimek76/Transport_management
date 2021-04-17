@@ -117,7 +117,7 @@ public class SemitrailerServiceTest {
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void shouldShowExeptionWhenSemitrailerDoesntExist(){
+    public void shouldShowExceptionWhenSemitrailerDoesntExist(){
         Semitrailer semitrailer = new Semitrailer();
         semitrailer.setId(2L);
 
