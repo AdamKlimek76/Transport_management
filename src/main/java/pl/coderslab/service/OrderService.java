@@ -4,11 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.coderslab.dto.OrderDtoNew;
+import pl.coderslab.dto.OrderDtoToBook;
+import pl.coderslab.dtoread.OrderDtoRead;
 import pl.coderslab.dtoread.OrderDtoReadNew;
 import pl.coderslab.model.Order;
 import pl.coderslab.repository.OrderRepository;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -136,5 +137,139 @@ public class OrderService implements CrudService<Order>, OrdersService {
                         entity.getUnloadingPlace(),
                         entity.getCargo()));
 
+    }
+
+    @Override
+    public OrderDtoToBook showOrderToBookById(long id) {
+        return orderRepository.findById(id)
+                .map(entity -> new OrderDtoToBook(
+                        entity.getId(),
+                        entity.getStatus(),
+                        entity.getCreated(),
+                        entity.getUpdated(),
+                        entity.getOrderNumber(),
+                        entity.getDeliveryDate(),
+                        entity.getDeliveryHour(),
+                        entity.getLoadingDate(),
+                        entity.getLoadingHour(),
+                        entity.getLoadingPlace(),
+                        entity.getUnloadingPlace(),
+                        entity.getCargo(),
+                        entity.getDriver(),
+                        entity.getSemitrailer(),
+                        entity.getTruck())).
+                        orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public void bookNewOrder(OrderDtoToBook bookedOrder) {
+        Order bookedOrderToSave = new Order();
+        bookedOrderToSave.setStatus("w trakcie");
+        bookedOrderToSave.setUpdated(LocalDateTime.now());
+        bookedOrderToSave.setCargo(bookedOrder.getCargo());
+        bookedOrderToSave.setId(bookedOrder.getId());
+        bookedOrderToSave.setCreated(bookedOrder.getCreated());
+        bookedOrderToSave.setOrderNumber(bookedOrder.getOrderNumber());
+        bookedOrderToSave.setUnloadingPlace(bookedOrder.getUnloadingPlace());
+        bookedOrderToSave.setDeliveryHour(bookedOrder.getDeliveryHour());
+        bookedOrderToSave.setDeliveryDate(bookedOrder.getDeliveryDate());
+        bookedOrderToSave.setLoadingPlace(bookedOrder.getLoadingPlace());
+        bookedOrderToSave.setLoadingHour(bookedOrder.getLoadingHour());
+        bookedOrderToSave.setLoadingDate(bookedOrder.getLoadingDate());
+        bookedOrderToSave.setDriver(bookedOrder.getDriver());
+        bookedOrderToSave.setSemitrailer(bookedOrder.getSemitrailer());
+        bookedOrderToSave.setTruck(bookedOrder.getTruck());
+        orderRepository.save(bookedOrderToSave);
+
+    }
+
+    @Override
+    public List<OrderDtoRead> showAllBookedOrders() {
+        return orderRepository.findAllByStatus("w trakcie")
+                .stream()
+                .map(entity -> new OrderDtoRead(
+                        entity.getId(),
+                        entity.getStatus(),
+                        entity.getCreated(),
+                        entity.getUpdated(),
+                        entity.getOrderNumber(),
+                        entity.getDeliveryDate(),
+                        entity.getDeliveryHour(),
+                        entity.getLoadingDate(),
+                        entity.getLoadingHour(),
+                        entity.getLoadingPlace(),
+                        entity.getUnloadingPlace(),
+                        entity.getCargo(),
+                        entity.getDriver(),
+                        entity.getSemitrailer(),
+                        entity.getTruck()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void changeBookedOrder(OrderDtoRead bookedOrder) {
+        Order changedOrder = new Order();
+        changedOrder.setStatus(bookedOrder.getStatus());
+        changedOrder.setUpdated(LocalDateTime.now());
+        changedOrder.setCargo(bookedOrder.getCargo());
+        changedOrder.setId(bookedOrder.getId());
+        changedOrder.setCreated(bookedOrder.getCreated());
+        changedOrder.setOrderNumber(bookedOrder.getOrderNumber());
+        changedOrder.setUnloadingPlace(bookedOrder.getUnloadingPlace());
+        changedOrder.setDeliveryHour(bookedOrder.getDeliveryHour());
+        changedOrder.setDeliveryDate(bookedOrder.getDeliveryDate());
+        changedOrder.setLoadingPlace(bookedOrder.getLoadingPlace());
+        changedOrder.setLoadingHour(bookedOrder.getLoadingHour());
+        changedOrder.setLoadingDate(bookedOrder.getLoadingDate());
+        changedOrder.setDriver(bookedOrder.getDriver());
+        changedOrder.setSemitrailer(bookedOrder.getSemitrailer());
+        changedOrder.setTruck(bookedOrder.getTruck());
+        orderRepository.save(changedOrder);
+    }
+
+    @Override
+    public List<OrderDtoRead> showAllDoneOrders() {
+        return orderRepository.findAllByStatus("zrealizowane")
+                .stream()
+                .map(entity -> new OrderDtoRead(
+                        entity.getId(),
+                        entity.getStatus(),
+                        entity.getCreated(),
+                        entity.getUpdated(),
+                        entity.getOrderNumber(),
+                        entity.getDeliveryDate(),
+                        entity.getDeliveryHour(),
+                        entity.getLoadingDate(),
+                        entity.getLoadingHour(),
+                        entity.getLoadingPlace(),
+                        entity.getUnloadingPlace(),
+                        entity.getCargo(),
+                        entity.getDriver(),
+                        entity.getSemitrailer(),
+                        entity.getTruck()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDtoRead> showAllOrders() {
+        return orderRepository.findAll()
+                .stream()
+                .map(entity -> new OrderDtoRead(
+                        entity.getId(),
+                        entity.getStatus(),
+                        entity.getCreated(),
+                        entity.getUpdated(),
+                        entity.getOrderNumber(),
+                        entity.getDeliveryDate(),
+                        entity.getDeliveryHour(),
+                        entity.getLoadingDate(),
+                        entity.getLoadingHour(),
+                        entity.getLoadingPlace(),
+                        entity.getUnloadingPlace(),
+                        entity.getCargo(),
+                        entity.getDriver(),
+                        entity.getSemitrailer(),
+                        entity.getTruck()))
+                .collect(Collectors.toList());
     }
 }

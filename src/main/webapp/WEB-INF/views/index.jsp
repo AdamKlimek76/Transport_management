@@ -28,7 +28,7 @@
 
     <tr>
         <td>
-            <a href="${pageContext.request.contextPath}/user/order/newOrder/all">
+            <a href="${pageContext.request.contextPath}/user/order/newOrder/new">
                 <h2><span>Zlecenia transportowe</span></h2>
             </a>
         </td>

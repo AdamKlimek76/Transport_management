@@ -1,6 +1,8 @@
 package pl.coderslab.service;
 
 import pl.coderslab.dto.OrderDtoNew;
+import pl.coderslab.dto.OrderDtoToBook;
+import pl.coderslab.dtoread.OrderDtoRead;
 import pl.coderslab.dtoread.OrderDtoReadNew;
 
 import java.util.List;
@@ -15,5 +17,17 @@ public interface OrdersService {
     List<OrderDtoReadNew> showAllNewOrders();
 
     Optional<OrderDtoReadNew> showNewOrderById(long id);
+
+    OrderDtoToBook showOrderToBookById(long id);
+
+    void bookNewOrder(OrderDtoToBook bookedOrder);
+
+    List<OrderDtoRead>showAllBookedOrders();
+
+    void changeBookedOrder(OrderDtoRead bookedOrder);
+
+    List<OrderDtoRead>showAllDoneOrders();
+
+    List<OrderDtoRead>showAllOrders();
 
 }
