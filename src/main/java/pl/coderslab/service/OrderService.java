@@ -12,6 +12,7 @@ import pl.coderslab.repository.OrderRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -185,25 +186,9 @@ public class OrderService implements CrudService<Order>, OrdersService {
 
     @Override
     public List<OrderDtoRead> showAllBookedOrders() {
-        return orderRepository.findAllByStatus("w trakcie")
-                .stream()
-                .map(entity -> new OrderDtoRead(
-                        entity.getId(),
-                        entity.getStatus(),
-                        entity.getCreated(),
-                        entity.getUpdated(),
-                        entity.getOrderNumber(),
-                        entity.getDeliveryDate(),
-                        entity.getDeliveryHour(),
-                        entity.getLoadingDate(),
-                        entity.getLoadingHour(),
-                        entity.getLoadingPlace(),
-                        entity.getUnloadingPlace(),
-                        entity.getCargo(),
-                        entity.getDriver(),
-                        entity.getSemitrailer(),
-                        entity.getTruck()))
-                .collect(Collectors.toList());
+        List<Order>allBookedOrders=new ArrayList<>();
+        allBookedOrders=orderRepository.findAllByStatus("w trakcie");
+        return castOrderToOrderReadDto(allBookedOrders);
     }
 
     @Override
@@ -229,58 +214,72 @@ public class OrderService implements CrudService<Order>, OrdersService {
 
     @Override
     public List<OrderDtoRead> showAllDoneOrders() {
-        return orderRepository.findAllByStatus("zrealizowane")
-                .stream()
-                .map(entity -> new OrderDtoRead(
-                        entity.getId(),
-                        entity.getStatus(),
-                        entity.getCreated(),
-                        entity.getUpdated(),
-                        entity.getOrderNumber(),
-                        entity.getDeliveryDate(),
-                        entity.getDeliveryHour(),
-                        entity.getLoadingDate(),
-                        entity.getLoadingHour(),
-                        entity.getLoadingPlace(),
-                        entity.getUnloadingPlace(),
-                        entity.getCargo(),
-                        entity.getDriver(),
-                        entity.getSemitrailer(),
-                        entity.getTruck()))
-                .collect(Collectors.toList());
+        List<Order>doneOrderList=new ArrayList<>();
+        doneOrderList=orderRepository.findAllByStatus("zrealizowane");
+        return castOrderToOrderReadDto(doneOrderList);
     }
 
     @Override
     public List<OrderDtoRead> showAllOrders() {
-        return orderRepository.findAll()
-                .stream()
-                .map(entity -> new OrderDtoRead(
-                        entity.getId(),
-                        entity.getStatus(),
-                        entity.getCreated(),
-                        entity.getUpdated(),
-                        entity.getOrderNumber(),
-                        entity.getDeliveryDate(),
-                        entity.getDeliveryHour(),
-                        entity.getLoadingDate(),
-                        entity.getLoadingHour(),
-                        entity.getLoadingPlace(),
-                        entity.getUnloadingPlace(),
-                        entity.getCargo(),
-                        entity.getDriver(),
-                        entity.getSemitrailer(),
-                        entity.getTruck()))
-                .collect(Collectors.toList());
+        List<Order>allOrders=new ArrayList<>();
+        allOrders=orderRepository.findAll();
+        return castOrderToOrderReadDto(allOrders);
     }
 
     @Override
     public List<OrderDtoRead> sortDoneOrders(String columnName, String sortOrder) {
-        return null;
+
+        final String STATUS = "zrealizowane";
+
+        List<Order> sortedDoneOrders = new ArrayList<>();
+        if (columnName.equals("loadingPlace") && sortOrder.equals("ASC")) {
+            sortedDoneOrders = orderRepository.findDoneOrdersOrderByLoadingPlaceCompanyAsc(STATUS);
+        } else if (columnName.equals("loadingPlace") && sortOrder.equals("DESC")) {
+            sortedDoneOrders = orderRepository.findDoneOrdersOrderByLoadingPlaceCompanyDesc(STATUS);
+        } else if (columnName.equals("unloadingPlace") && sortOrder.equals("ASC")) {
+            sortedDoneOrders = orderRepository.findDoneOrdersOrderByUnloadingPlaceCompanyAsc(STATUS);
+        } else {
+            sortedDoneOrders = orderRepository.findDoneOrdersOrderByUnloadingPlaceCompanyDesc(STATUS);
+        }
+
+        return castOrderToOrderReadDto(sortedDoneOrders);
 
     }
 
     @Override
     public List<OrderDtoRead> searchDoneOrders(String columnName, String searchedText) {
-        return null;
+
+        final String STATUS = "zrealizowane";
+
+        List<Order> searchedDoneOrders = new ArrayList<>();
+        if (columnName.equals("driver")) {
+            searchedDoneOrders = orderRepository.findOrdersByDriverLastName(STATUS, searchedText);
+        } else {
+            searchedDoneOrders = orderRepository.findOrdersBySemitrailerRegisterNumber(STATUS, searchedText);
+        }
+
+        return castOrderToOrderReadDto(searchedDoneOrders);
+    }
+
+    private List<OrderDtoRead>castOrderToOrderReadDto(List<Order>orders){
+        return orders
+                .stream()
+                .map(entity -> new OrderDtoRead(
+                        entity.getId(),
+                        entity.getStatus(),
+                        entity.getCreated(),
+                        entity.getUpdated(),
+                        entity.getOrderNumber(),
+                        entity.getDeliveryDate(),
+                        entity.getDeliveryHour(),
+                        entity.getLoadingDate(),
+                        entity.getLoadingHour(),
+                        entity.getLoadingPlace(),
+                        entity.getUnloadingPlace(),
+                        entity.getCargo(),
+                        entity.getDriver(),
+                        entity.getSemitrailer(),
+                        entity.getTruck()))
+                .collect(Collectors.toList());
     }
 }

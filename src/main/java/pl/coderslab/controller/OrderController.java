@@ -152,19 +152,21 @@ public class OrderController {
     }
 
     @PostMapping("/done/sorted")
-    @ResponseBody
     public String showDoneOrdersSorted(@RequestParam String sortedDoneOrders,
-                                       @RequestParam String sortingOptions) {
-
-        return sortedDoneOrders + " " + sortingOptions;
+                                       @RequestParam String sortingOptions,
+                                       Model model) {
+        List<OrderDtoRead>sortedOrders=orderService.sortDoneOrders(sortedDoneOrders, sortingOptions);
+        model.addAttribute("doneOrders", sortedOrders);
+        return "doneOrderAll";
     }
 
     @PostMapping("/done/found")
-    @ResponseBody
     public String findDoneOrdersByColumn(@RequestParam String findDoneOrders,
-                                       @RequestParam String searchedText) {
-
-        return findDoneOrders + " " + searchedText;
+                                       @RequestParam String searchedText,
+                                         Model model) {
+        List<OrderDtoRead>foundOrders=orderService.searchDoneOrders(findDoneOrders, searchedText);
+        model.addAttribute("doneOrders", foundOrders);
+        return "doneOrderAll";
     }
 
     @GetMapping("/all")

@@ -37,7 +37,7 @@
                 <form method="post" action="/user/order/newOrder/done/found">
                     Wyszukaj zlecenia wg:
                     <select name="findDoneOrders">
-                        <option value="driver">Kierowcy</option>
+                        <option value="driver">Nazwiska kierowcy</option>
                         <option value="trailerRegisterNumber">Nr rejestracyjnego naczepy</option>
                     </select>
                     <br>
