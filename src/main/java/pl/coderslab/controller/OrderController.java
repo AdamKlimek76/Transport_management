@@ -87,15 +87,15 @@ public class OrderController {
     }
 
     @GetMapping("/detail/{id}")
-    public String showOrderDetails(@PathVariable Long id, Model model){
+    public String showOrderDetails(@PathVariable Long id, Model model) {
         OrderDtoReadNew order = orderService.showNewOrderById(id).orElseThrow(EntityExistsException::new);
         model.addAttribute("orderDetails", order);
         return "newOrderDetails";
     }
 
     @GetMapping("/book/{id}")
-    public String showOrderBookingForm(@PathVariable Long id, Model model){
-        OrderDtoToBook orderToBook=orderService.showOrderToBookById(id);
+    public String showOrderBookingForm(@PathVariable Long id, Model model) {
+        OrderDtoToBook orderToBook = orderService.showOrderToBookById(id);
         model.addAttribute("orderToBook", orderToBook);
         return "bookOrderFormAdd";
     }
@@ -134,8 +134,8 @@ public class OrderController {
 
     @PostMapping("/editBooked")
     public String editBookedOrder(@ModelAttribute("editBookedOrder")
-                               @Valid OrderDtoRead orderToBook,
-                               BindingResult bindingResult) {
+                                  @Valid OrderDtoRead orderToBook,
+                                  BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "bookOrderEdit";
@@ -149,6 +149,22 @@ public class OrderController {
         List<OrderDtoRead> doneOrders = orderService.showAllDoneOrders();
         model.addAttribute("doneOrders", doneOrders);
         return "doneOrderAll";
+    }
+
+    @PostMapping("/done/sorted")
+    @ResponseBody
+    public String showDoneOrdersSorted(@RequestParam String sortedDoneOrders,
+                                       @RequestParam String sortingOptions) {
+
+        return sortedDoneOrders + " " + sortingOptions;
+    }
+
+    @PostMapping("/done/found")
+    @ResponseBody
+    public String findDoneOrdersByColumn(@RequestParam String findDoneOrders,
+                                       @RequestParam String searchedText) {
+
+        return findDoneOrders + " " + searchedText;
     }
 
     @GetMapping("/all")
@@ -174,17 +190,17 @@ public class OrderController {
     }
 
     @ModelAttribute("drivers")
-    public List<Driver>drivers(){
+    public List<Driver> drivers() {
         return driverService.showAll();
     }
 
     @ModelAttribute("semitrailers")
-    public List<Semitrailer>semitrailers(){
+    public List<Semitrailer> semitrailers() {
         return semitrailerService.showAll();
     }
 
     @ModelAttribute("trucks")
-    public List<Truck>trucks(){
+    public List<Truck> trucks() {
         return truckService.showAll();
     }
 }

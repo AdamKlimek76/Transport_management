@@ -30,4 +30,8 @@ public interface OrdersService {
 
     List<OrderDtoRead>showAllOrders();
 
+    List<OrderDtoRead>sortDoneOrders(String columnName, String sortOrder);
+
+    List<OrderDtoRead>searchDoneOrders(String columnName, String searchedText);
+
 }

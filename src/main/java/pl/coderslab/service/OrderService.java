@@ -272,4 +272,15 @@ public class OrderService implements CrudService<Order>, OrdersService {
                         entity.getTruck()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<OrderDtoRead> sortDoneOrders(String columnName, String sortOrder) {
+        return null;
+
+    }
+
+    @Override
+    public List<OrderDtoRead> searchDoneOrders(String columnName, String searchedText) {
+        return null;
+    }
 }
