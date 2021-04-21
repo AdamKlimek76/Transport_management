@@ -9,10 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import pl.coderslab.dto.OrderDtoNew;
-import pl.coderslab.dtoread.OrderDtoReadNew;
+import pl.coderslab.dto.OrderNewDto;
+import pl.coderslab.dtoread.OrderReadNewDto;
 import pl.coderslab.model.Cargo;
 import pl.coderslab.model.LoadingPlace;
 import pl.coderslab.model.Order;
@@ -22,7 +20,6 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -65,7 +62,7 @@ public class OrderServiceTest {
 
     @Test
     public void shouldAddNewOrder() {
-        OrderDtoNew orderDtoNew = new OrderDtoNew();
+        OrderNewDto orderDtoNew = new OrderNewDto();
         orderDtoNew.setStatus("nowe");
         Cargo cargo = new Cargo();
         orderDtoNew.setCargo(cargo);
@@ -88,7 +85,7 @@ public class OrderServiceTest {
 
     @Test
     public void updateNewOrder() {
-        OrderDtoReadNew orderDtoNew = new OrderDtoReadNew();
+        OrderReadNewDto orderDtoNew = new OrderReadNewDto();
         orderDtoNew.setStatus("nowe");
         Cargo cargo = new Cargo();
         orderDtoNew.setCargo(cargo);
@@ -130,12 +127,12 @@ public class OrderServiceTest {
 
         Mockito.when(orderRepository.findAllByStatus("nowe")).thenReturn(orders);
 
-        List<OrderDtoReadNew> orderDtoReadNewList = orderService.showAllNewOrders();
-        OrderDtoReadNew orderDtoReadNew = orderDtoReadNewList.get(0);
+        List<OrderReadNewDto> orderDtoReadNewList = orderService.showAllNewOrders();
+        OrderReadNewDto orderDtoReadNew = orderDtoReadNewList.get(0);
         String readCargoName = orderDtoReadNew.getCargo().getName();
-        OrderDtoReadNew orderDtoReadNew1 = orderDtoReadNewList.get(1);
+        OrderReadNewDto orderDtoReadNew1 = orderDtoReadNewList.get(1);
         String readCargo1Name = orderDtoReadNew1.getCargo().getName();
-        OrderDtoReadNew orderDtoReadNew2 = orderDtoReadNewList.get(2);
+        OrderReadNewDto orderDtoReadNew2 = orderDtoReadNewList.get(2);
         String readCargo2Name = orderDtoReadNew2.getCargo().getName();
         Assert.assertSame(readCargoName, "cukier");
         Assert.assertSame(readCargo1Name, "melasa");
@@ -149,7 +146,7 @@ public class OrderServiceTest {
         order.setId(3L);
         given(orderRepository.findById(3L)).willReturn(Optional.of(order));
 
-        OrderDtoReadNew foundOrderDtoReadNew = orderService.showNewOrderById(3L).orElseThrow();
+        OrderReadNewDto foundOrderDtoReadNew = orderService.showNewOrderById(3L).orElseThrow();
 
         Assert.assertSame(order.getId(), foundOrderDtoReadNew.getId());
 

@@ -7,8 +7,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Optional;
 
-public class OrderDtoRead {
+public class OrderReadDto {
 
     private Long id;
 
@@ -26,7 +27,7 @@ public class OrderDtoRead {
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime deliveryHour;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate loadingDate;
 
     @DateTimeFormat(pattern = "HH:mm")
@@ -50,7 +51,7 @@ public class OrderDtoRead {
     @NotNull
     private Truck truck;
 
-    public OrderDtoRead(Long id, String status, LocalDateTime created, LocalDateTime updated, String orderNumber, LocalDate deliveryDate, LocalTime deliveryHour, LocalDate loadingDate, LocalTime loadingHour, @NotNull LoadingPlace loadingPlace, @NotNull UnloadingPlace unloadingPlace, @NotNull Cargo cargo, @NotNull Driver driver, @NotNull Semitrailer semitrailer, @NotNull Truck truck) {
+    public OrderReadDto(Long id, String status, LocalDateTime created, LocalDateTime updated, String orderNumber, LocalDate deliveryDate, LocalTime deliveryHour, LocalDate loadingDate, LocalTime loadingHour, @NotNull LoadingPlace loadingPlace, @NotNull UnloadingPlace unloadingPlace, @NotNull Cargo cargo, @NotNull Driver driver, @NotNull Semitrailer semitrailer, @NotNull Truck truck) {
         this.id = id;
         this.status = status;
         this.created = created;
@@ -68,7 +69,10 @@ public class OrderDtoRead {
         this.truck = truck;
     }
 
-    public OrderDtoRead(){};
+    public OrderReadDto() {
+    }
+
+    ;
 
     public Long getId() {
         return id;
@@ -188,6 +192,43 @@ public class OrderDtoRead {
 
     public void setTruck(Truck truck) {
         this.truck = truck;
+    }
+
+    private String getDriverFullNameIfPresent() {
+        if (this.driver == null) {
+            return "";
+        } else {
+            return this.driver.getLastName() + " " + this.driver.getFirstName();
+        }
+    }
+
+    private String getTruckRegisterNumberIfPresent() {
+        return Optional.ofNullable(Optional.ofNullable(this.truck)
+                .orElse(new Truck()).getRegisterNumber())
+                .orElse("");
+
+    }
+
+    private String getSemitrailerRegisterNumberIfPresent() {
+        return Optional.ofNullable(Optional.ofNullable(this.semitrailer)
+                .orElse(new Semitrailer()).getRegisterNumber())
+                .orElse("");
+    }
+
+    public String getStringToSearchBookedOrders() {
+        return (this.status +
+                this.orderNumber +
+                this.loadingDate.toString() +
+                this.loadingHour.toString() +
+                this.deliveryDate.toString() +
+                this.deliveryHour.toString() +
+                this.loadingPlace.getCompany() +
+                this.unloadingPlace.getCompany() +
+                this.cargo.getName() +
+                getDriverFullNameIfPresent() +
+                getTruckRegisterNumberIfPresent() +
+                getSemitrailerRegisterNumberIfPresent())
+                .toLowerCase();
     }
 
     @Override

@@ -1,37 +1,39 @@
 package pl.coderslab.service;
 
-import pl.coderslab.dto.OrderDtoNew;
-import pl.coderslab.dto.OrderDtoToBook;
-import pl.coderslab.dtoread.OrderDtoRead;
-import pl.coderslab.dtoread.OrderDtoReadNew;
+import pl.coderslab.dto.OrderNewDto;
+import pl.coderslab.dto.OrderToBookDto;
+import pl.coderslab.dtoread.OrderReadDto;
+import pl.coderslab.dtoread.OrderReadNewDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface OrdersService {
 
-    void addNewOrder(OrderDtoNew newOrder);
+    void addNewOrder(OrderNewDto newOrder);
 
-    void updateNewOrder(OrderDtoReadNew newOrder);
+    void updateNewOrder(OrderReadNewDto newOrder);
 
-    List<OrderDtoReadNew> showAllNewOrders();
+    List<OrderReadNewDto> showAllNewOrders();
 
-    Optional<OrderDtoReadNew> showNewOrderById(long id);
+    Optional<OrderReadNewDto> showNewOrderById(long id);
 
-    OrderDtoToBook showOrderToBookById(long id);
+    OrderToBookDto showOrderToBookById(long id);
 
-    void bookNewOrder(OrderDtoToBook bookedOrder);
+    void bookNewOrder(OrderToBookDto bookedOrder);
 
-    List<OrderDtoRead>showAllBookedOrders();
+    List<OrderReadDto>showAllBookedOrders();
 
-    void changeBookedOrder(OrderDtoRead bookedOrder);
+    void changeBookedOrder(OrderReadDto bookedOrder);
 
-    List<OrderDtoRead>showAllDoneOrders();
+    List<OrderReadDto>showAllDoneOrders();
 
-    List<OrderDtoRead>showAllOrders();
+    List<OrderReadDto>showAllOrders();
 
-    List<OrderDtoRead>sortDoneOrders(String columnName, String sortOrder);
+    List<OrderReadDto>sortDoneOrders(String columnName, String sortOrder);
 
-    List<OrderDtoRead>searchDoneOrders(String columnName, String searchedText);
+    List<OrderReadDto>searchDoneOrders(String columnName, String searchedText);
+
+    List<OrderReadDto>searchBookedOrders(String searchedText);
 
 }

@@ -3,10 +3,10 @@ package pl.coderslab.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pl.coderslab.dto.OrderDtoNew;
-import pl.coderslab.dto.OrderDtoToBook;
-import pl.coderslab.dtoread.OrderDtoRead;
-import pl.coderslab.dtoread.OrderDtoReadNew;
+import pl.coderslab.dto.OrderNewDto;
+import pl.coderslab.dto.OrderToBookDto;
+import pl.coderslab.dtoread.OrderReadDto;
+import pl.coderslab.dtoread.OrderReadNewDto;
 import pl.coderslab.model.Order;
 import pl.coderslab.repository.OrderRepository;
 
@@ -62,7 +62,7 @@ public class OrderService implements CrudService<Order>, OrdersService {
 
 
     @Override
-    public void addNewOrder(OrderDtoNew newOrder) {
+    public void addNewOrder(OrderNewDto newOrder) {
         Order orderToAdd = new Order();
         orderToAdd.setStatus("nowe");
         orderToAdd.setCreated(LocalDateTime.now());
@@ -81,7 +81,7 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public void updateNewOrder(OrderDtoReadNew updatedOrder) {
+    public void updateNewOrder(OrderReadNewDto updatedOrder) {
         Order orderToUpdate = new Order();
         orderToUpdate.setId(updatedOrder.getId());
         orderToUpdate.setStatus(updatedOrder.getStatus());
@@ -101,11 +101,11 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public List<OrderDtoReadNew> showAllNewOrders() {
+    public List<OrderReadNewDto> showAllNewOrders() {
 
         return orderRepository.findAllByStatus("nowe")
                 .stream()
-                .map(entity -> new OrderDtoReadNew(
+                .map(entity -> new OrderReadNewDto(
                         entity.getId(),
                         entity.getStatus(),
                         entity.getCreated(),
@@ -122,9 +122,9 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public Optional<OrderDtoReadNew> showNewOrderById(long id) {
+    public Optional<OrderReadNewDto> showNewOrderById(long id) {
         return orderRepository.findById(id)
-                .map(entity -> new OrderDtoReadNew(
+                .map(entity -> new OrderReadNewDto(
                         entity.getId(),
                         entity.getStatus(),
                         entity.getCreated(),
@@ -141,9 +141,9 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public OrderDtoToBook showOrderToBookById(long id) {
+    public OrderToBookDto showOrderToBookById(long id) {
         return orderRepository.findById(id)
-                .map(entity -> new OrderDtoToBook(
+                .map(entity -> new OrderToBookDto(
                         entity.getId(),
                         entity.getStatus(),
                         entity.getCreated(),
@@ -163,7 +163,7 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public void bookNewOrder(OrderDtoToBook bookedOrder) {
+    public void bookNewOrder(OrderToBookDto bookedOrder) {
         Order bookedOrderToSave = new Order();
         bookedOrderToSave.setStatus("w trakcie");
         bookedOrderToSave.setUpdated(LocalDateTime.now());
@@ -185,14 +185,14 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public List<OrderDtoRead> showAllBookedOrders() {
+    public List<OrderReadDto> showAllBookedOrders() {
         List<Order>allBookedOrders=new ArrayList<>();
         allBookedOrders=orderRepository.findAllByStatus("w trakcie");
         return castOrderToOrderReadDto(allBookedOrders);
     }
 
     @Override
-    public void changeBookedOrder(OrderDtoRead bookedOrder) {
+    public void changeBookedOrder(OrderReadDto bookedOrder) {
         Order changedOrder = new Order();
         changedOrder.setStatus(bookedOrder.getStatus());
         changedOrder.setUpdated(LocalDateTime.now());
@@ -213,21 +213,21 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public List<OrderDtoRead> showAllDoneOrders() {
+    public List<OrderReadDto> showAllDoneOrders() {
         List<Order>doneOrderList=new ArrayList<>();
         doneOrderList=orderRepository.findAllByStatus("zrealizowane");
         return castOrderToOrderReadDto(doneOrderList);
     }
 
     @Override
-    public List<OrderDtoRead> showAllOrders() {
+    public List<OrderReadDto> showAllOrders() {
         List<Order>allOrders=new ArrayList<>();
         allOrders=orderRepository.findAll();
         return castOrderToOrderReadDto(allOrders);
     }
 
     @Override
-    public List<OrderDtoRead> sortDoneOrders(String columnName, String sortOrder) {
+    public List<OrderReadDto> sortDoneOrders(String columnName, String sortOrder) {
 
         final String STATUS = "zrealizowane";
 
@@ -247,7 +247,7 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public List<OrderDtoRead> searchDoneOrders(String columnName, String searchedText) {
+    public List<OrderReadDto> searchDoneOrders(String columnName, String searchedText) {
 
         final String STATUS = "zrealizowane";
 
@@ -261,10 +261,23 @@ public class OrderService implements CrudService<Order>, OrdersService {
         return castOrderToOrderReadDto(searchedDoneOrders);
     }
 
-    private List<OrderDtoRead>castOrderToOrderReadDto(List<Order>orders){
+    @Override
+    public List<OrderReadDto> searchBookedOrders(String searchedText) {
+        List<Order>foundOrders=new ArrayList<>();
+        foundOrders=orderRepository.findAll();
+        List<OrderReadDto>foundOrdersDto=castOrderToOrderReadDto(foundOrders);
+        List<String>stringsToSearch=new ArrayList<>();
+
+        return foundOrdersDto.stream()
+                .filter(entity->entity.getStringToSearchBookedOrders().contains(searchedText.toLowerCase()))
+                .collect(Collectors.toList());
+
+    }
+
+    private List<OrderReadDto>castOrderToOrderReadDto(List<Order>orders){
         return orders
                 .stream()
-                .map(entity -> new OrderDtoRead(
+                .map(entity -> new OrderReadDto(
                         entity.getId(),
                         entity.getStatus(),
                         entity.getCreated(),

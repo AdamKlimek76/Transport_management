@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class OrderDtoToBook {
+public class OrderToBookDto {
 
     private Long id;
 
@@ -50,7 +50,7 @@ public class OrderDtoToBook {
     @NotNull
     private Truck truck;
 
-    public OrderDtoToBook(Long id, String status, LocalDateTime created, LocalDateTime updated, String orderNumber, LocalDate deliveryDate, LocalTime deliveryHour, LocalDate loadingDate, LocalTime loadingHour, @NotNull LoadingPlace loadingPlace, @NotNull UnloadingPlace unloadingPlace, @NotNull Cargo cargo, @NotNull Driver driver, @NotNull Semitrailer semitrailer, @NotNull Truck truck) {
+    public OrderToBookDto(Long id, String status, LocalDateTime created, LocalDateTime updated, String orderNumber, LocalDate deliveryDate, LocalTime deliveryHour, LocalDate loadingDate, LocalTime loadingHour, @NotNull LoadingPlace loadingPlace, @NotNull UnloadingPlace unloadingPlace, @NotNull Cargo cargo, @NotNull Driver driver, @NotNull Semitrailer semitrailer, @NotNull Truck truck) {
         this.id = id;
         this.status = status;
         this.created = created;
@@ -68,7 +68,7 @@ public class OrderDtoToBook {
         this.truck = truck;
     }
 
-    public OrderDtoToBook(){};
+    public OrderToBookDto(){};
 
     public Long getId() {
         return id;
