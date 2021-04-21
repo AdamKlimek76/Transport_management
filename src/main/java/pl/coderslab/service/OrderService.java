@@ -262,11 +262,8 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public List<OrderReadDto> searchBookedOrders(String searchedText) {
-        List<Order>foundOrders=new ArrayList<>();
-        foundOrders=orderRepository.findAll();
-        List<OrderReadDto>foundOrdersDto=castOrderToOrderReadDto(foundOrders);
-        List<String>stringsToSearch=new ArrayList<>();
+    public List<OrderReadDto> searchInAllOrders(String searchedText) {
+        List<OrderReadDto>foundOrdersDto=castOrderToOrderReadDto(orderRepository.findAll());
 
         return foundOrdersDto.stream()
                 .filter(entity->entity.getStringToSearchBookedOrders().contains(searchedText.toLowerCase()))

@@ -22,18 +22,18 @@ public interface OrdersService {
 
     void bookNewOrder(OrderToBookDto bookedOrder);
 
-    List<OrderReadDto>showAllBookedOrders();
+    List<OrderReadDto> showAllBookedOrders();
 
     void changeBookedOrder(OrderReadDto bookedOrder);
 
-    List<OrderReadDto>showAllDoneOrders();
+    List<OrderReadDto> showAllDoneOrders();
 
-    List<OrderReadDto>showAllOrders();
+    List<OrderReadDto> showAllOrders();
 
-    List<OrderReadDto>sortDoneOrders(String columnName, String sortOrder);
+    List<OrderReadDto> sortDoneOrders(String columnName, String sortOrder);
 
-    List<OrderReadDto>searchDoneOrders(String columnName, String searchedText);
+    List<OrderReadDto> searchDoneOrders(String columnName, String searchedText);
 
-    List<OrderReadDto>searchBookedOrders(String searchedText);
+    List<OrderReadDto> searchInAllOrders(String searchedText);
 
 }

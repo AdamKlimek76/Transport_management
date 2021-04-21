@@ -179,7 +179,7 @@ public class OrderController {
     @PostMapping("/all/found")
     public String showFoundInAllOrders(@RequestParam String searchedText,
                                         Model model) {
-        List<OrderReadDto>foundOrders=orderService.searchBookedOrders(searchedText);
+        List<OrderReadDto>foundOrders=orderService.searchInAllOrders(searchedText);
         model.addAttribute("allOrders", foundOrders);
         return "orderAll";
     }
