@@ -38,9 +38,11 @@ public class SemitrailerServiceTest {
         semitrailer.setProductionYear(2010L);
         semitrailer.setRegisterNumber("SCI1234");
         semitrailer.setType("silos");
-
         ArgumentCaptor<Semitrailer>argumentCaptor=ArgumentCaptor.forClass(Semitrailer.class);
+
+
         semitrailerService.add(semitrailer);
+
 
         verify(semitrailerRepository).save(argumentCaptor.capture());
         String brand=semitrailer.getBrand();
@@ -57,8 +59,9 @@ public class SemitrailerServiceTest {
         semitrailer.setProductionYear(2010L);
         semitrailer.setRegisterNumber("SCI1234");
         semitrailer.setType("silos");
-
         ArgumentCaptor<Semitrailer>argumentCaptor=ArgumentCaptor.forClass(Semitrailer.class);
+
+
         semitrailerService.update(semitrailer);
 
 
@@ -77,8 +80,9 @@ public class SemitrailerServiceTest {
         semitrailer.setProductionYear(2010L);
         semitrailer.setRegisterNumber("SCI1234");
         semitrailer.setType("silos");
-
         ArgumentCaptor<Long>argumentCaptor=ArgumentCaptor.forClass(Long.class);
+
+
         semitrailerService.delete(semitrailer.getId());
 
 
@@ -95,9 +99,11 @@ public class SemitrailerServiceTest {
                 new Semitrailer(),
                 new Semitrailer(),
                 new Semitrailer());
-
         when(semitrailerRepository.findAll()).thenReturn(semitrailers);
+
+
         List<Semitrailer>foundSemitrailers=semitrailerService.showAll();
+
 
         assertSame(semitrailers,  foundSemitrailers);
 
@@ -107,10 +113,11 @@ public class SemitrailerServiceTest {
     public void shouldShowByIdWhenSemitrailerExist() {
         Semitrailer semitrailer = new Semitrailer();
         semitrailer.setId(2L);
-
         given(semitrailerRepository.findById(2L)).willReturn(Optional.of(semitrailer));
 
+
         Semitrailer foundSemitrailer=semitrailerService.showById(2L);
+
 
         Assertions.assertThat(foundSemitrailer).isEqualTo(semitrailer);
 
@@ -118,11 +125,14 @@ public class SemitrailerServiceTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void shouldShowExceptionWhenSemitrailerDoesntExist(){
+        //given
         Semitrailer semitrailer = new Semitrailer();
         semitrailer.setId(2L);
-
         given(semitrailerRepository.findById(3L)).willReturn(Optional.ofNullable(null));
 
+        //when
         Semitrailer foundSemitrailer=semitrailerService.showById(3L);
+
+        //then Exception
     }
 }

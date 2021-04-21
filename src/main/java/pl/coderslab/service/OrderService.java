@@ -3,12 +3,11 @@ package pl.coderslab.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pl.coderslab.dto.OrderDtoNew;
-import pl.coderslab.dtoread.OrderDtoReadNew;
+import pl.coderslab.dto.OrderNewDto;
+import pl.coderslab.dtoread.OrderReadNewDto;
 import pl.coderslab.model.Order;
 import pl.coderslab.repository.OrderRepository;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,13 +30,13 @@ public class OrderService implements CrudService<Order>, OrdersService {
 
 
     @Override
-    public void add(Order order) throws RuntimeException {
-
+    public void add(Order order) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void update(Order newOrder) throws RuntimeException {
-
+    public void update(Order newOrder) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -60,7 +59,7 @@ public class OrderService implements CrudService<Order>, OrdersService {
 
 
     @Override
-    public void addNewOrder(OrderDtoNew newOrder) {
+    public void addNewOrder(OrderNewDto newOrder) {
         Order orderToAdd = new Order();
         orderToAdd.setStatus("nowe");
         orderToAdd.setCreated(LocalDateTime.now());
@@ -79,7 +78,7 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public void updateNewOrder(OrderDtoReadNew updatedOrder) {
+    public void updateNewOrder(OrderReadNewDto updatedOrder) {
         Order orderToUpdate = new Order();
         orderToUpdate.setId(updatedOrder.getId());
         orderToUpdate.setStatus(updatedOrder.getStatus());
@@ -99,11 +98,11 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public List<OrderDtoReadNew> showAllNewOrders() {
+    public List<OrderReadNewDto> showAllNewOrders() {
 
         return orderRepository.findAllByStatus("nowe")
                 .stream()
-                .map(entity -> new OrderDtoReadNew(
+                .map(entity -> new OrderReadNewDto(
                         entity.getId(),
                         entity.getStatus(),
                         entity.getCreated(),
@@ -120,9 +119,9 @@ public class OrderService implements CrudService<Order>, OrdersService {
     }
 
     @Override
-    public Optional<OrderDtoReadNew> showNewOrderById(long id) {
+    public Optional<OrderReadNewDto> showNewOrderById(long id) {
         return orderRepository.findById(id)
-                .map(entity -> new OrderDtoReadNew(
+                .map(entity -> new OrderReadNewDto(
                         entity.getId(),
                         entity.getStatus(),
                         entity.getCreated(),

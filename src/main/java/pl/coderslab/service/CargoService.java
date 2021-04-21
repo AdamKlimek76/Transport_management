@@ -43,6 +43,6 @@ public class CargoService implements CrudService<Cargo> {
 
     @Override
     public Cargo showById(long id) {
-      return  Optional.ofNullable(cargoRepository.findById(id).orElseThrow(EntityNotFoundException::new)).orElseThrow();
+      return  cargoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 }

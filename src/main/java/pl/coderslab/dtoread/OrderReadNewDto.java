@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class OrderDtoReadNew {
+public class OrderReadNewDto {
 
     private Long id;
 
@@ -44,7 +44,7 @@ public class OrderDtoReadNew {
     private Cargo cargo;
 
 
-    public OrderDtoReadNew(Long id, String status, LocalDateTime created, LocalDateTime updated, String orderNumber, LocalDate deliveryDate, LocalTime deliveryHour, LocalDate loadingDate, LocalTime loadingHour, LoadingPlace loadingPlace, UnloadingPlace unloadingPlace, Cargo cargo) {
+    public OrderReadNewDto(Long id, String status, LocalDateTime created, LocalDateTime updated, String orderNumber, LocalDate deliveryDate, LocalTime deliveryHour, LocalDate loadingDate, LocalTime loadingHour, LoadingPlace loadingPlace, UnloadingPlace unloadingPlace, Cargo cargo) {
         this.id = id;
         this.status = status;
         this.created = created;
@@ -59,7 +59,7 @@ public class OrderDtoReadNew {
         this.cargo = cargo;
     }
 
-    public OrderDtoReadNew(){};
+    public OrderReadNewDto(){};
 
     public Long getId() {
         return id;

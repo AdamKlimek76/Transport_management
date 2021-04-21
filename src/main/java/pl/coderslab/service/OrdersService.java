@@ -1,19 +1,19 @@
 package pl.coderslab.service;
 
-import pl.coderslab.dto.OrderDtoNew;
-import pl.coderslab.dtoread.OrderDtoReadNew;
+import pl.coderslab.dto.OrderNewDto;
+import pl.coderslab.dtoread.OrderReadNewDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface OrdersService {
 
-    void addNewOrder(OrderDtoNew newOrder);
+    void addNewOrder(OrderNewDto newOrder);
 
-    void updateNewOrder(OrderDtoReadNew newOrder);
+    void updateNewOrder(OrderReadNewDto newOrder);
 
-    List<OrderDtoReadNew> showAllNewOrders();
+    List<OrderReadNewDto> showAllNewOrders();
 
-    Optional<OrderDtoReadNew> showNewOrderById(long id);
+    Optional<OrderReadNewDto> showNewOrderById(long id);
 
 }

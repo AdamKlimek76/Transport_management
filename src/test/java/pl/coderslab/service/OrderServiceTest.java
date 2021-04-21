@@ -9,10 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import pl.coderslab.dto.OrderDtoNew;
-import pl.coderslab.dtoread.OrderDtoReadNew;
+import pl.coderslab.dto.OrderNewDto;
+import pl.coderslab.dtoread.OrderReadNewDto;
 import pl.coderslab.model.Cargo;
 import pl.coderslab.model.LoadingPlace;
 import pl.coderslab.model.Order;
@@ -22,7 +20,6 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -40,14 +37,17 @@ public class OrderServiceTest {
 
     @Test
     public void shouldDeleteIfExist() {
+        //given
         Order order = new Order();
         order.setId(10L);
         given(orderRepository.findById(10L)).
                 willReturn(Optional.of(order));
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
+        //when
         orderService.delete(10L);
 
+        //then
         Mockito.verify(orderRepository).deleteById(argumentCaptor.capture());
         Long correctIdOfDeletedOrder = argumentCaptor.getValue();
         Assertions.assertThat(correctIdOfDeletedOrder).isEqualTo(10L);
@@ -55,17 +55,22 @@ public class OrderServiceTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void shouldShowExceptionIfYouWantToDeleteNotExistingOrder() {
+        //given
         Order order = new Order();
         order.setId(10L);
         given(orderRepository.findById(20L)).
                 willReturn(Optional.ofNullable(null));
 
+        //when
         orderService.delete(20L);
+
+        //then Exception
     }
 
     @Test
     public void shouldAddNewOrder() {
-        OrderDtoNew orderDtoNew = new OrderDtoNew();
+        //given
+        OrderNewDto orderDtoNew = new OrderNewDto();
         orderDtoNew.setStatus("nowe");
         Cargo cargo = new Cargo();
         orderDtoNew.setCargo(cargo);
@@ -73,14 +78,15 @@ public class OrderServiceTest {
         orderDtoNew.setLoadingPlace(loadingPlace);
         ArgumentCaptor<Order> orderArgumentCaptor = ArgumentCaptor.forClass(Order.class);
 
+        //when
         orderService.addNewOrder(orderDtoNew);
 
+        //then
         Mockito.verify(orderRepository, Mockito.times(2)).save(orderArgumentCaptor.capture());
         String addedStatus = orderArgumentCaptor.getValue().getStatus();
         Cargo addedCargo = orderArgumentCaptor.getValue().getCargo();
         LoadingPlace addedLoadingPlace = orderArgumentCaptor.getValue().
                 getLoadingPlace();
-
         Assert.assertSame(addedStatus, "nowe");
         Assert.assertSame(addedCargo, cargo);
         Assert.assertSame(addedLoadingPlace, loadingPlace);
@@ -88,7 +94,8 @@ public class OrderServiceTest {
 
     @Test
     public void updateNewOrder() {
-        OrderDtoReadNew orderDtoNew = new OrderDtoReadNew();
+        //given
+        OrderReadNewDto orderDtoNew = new OrderReadNewDto();
         orderDtoNew.setStatus("nowe");
         Cargo cargo = new Cargo();
         orderDtoNew.setCargo(cargo);
@@ -96,14 +103,15 @@ public class OrderServiceTest {
         orderDtoNew.setLoadingPlace(loadingPlace);
         ArgumentCaptor<Order> orderArgumentCaptor = ArgumentCaptor.forClass(Order.class);
 
+        //when
         orderService.updateNewOrder(orderDtoNew);
 
+        //then
         Mockito.verify(orderRepository).save(orderArgumentCaptor.capture());
         String addedStatus = orderArgumentCaptor.getValue().getStatus();
         Cargo addedCargo = orderArgumentCaptor.getValue().getCargo();
         LoadingPlace addedLoadingPlace = orderArgumentCaptor.getValue().
                 getLoadingPlace();
-
         Assert.assertSame(addedStatus, "nowe");
         Assert.assertSame(addedCargo, cargo);
         Assert.assertSame(addedLoadingPlace, loadingPlace);
@@ -111,6 +119,7 @@ public class OrderServiceTest {
 
     @Test
     public void shouldShowAllNewOrders() {
+        //given
         Order order = new Order();
         order.setStatus("nowe");
         Cargo cargo = new Cargo();
@@ -127,15 +136,17 @@ public class OrderServiceTest {
         cargo2.setName("mąka");
         order2.setCargo(cargo2);
         List<Order> orders = List.of(order, order1, order2);
-
         Mockito.when(orderRepository.findAllByStatus("nowe")).thenReturn(orders);
 
-        List<OrderDtoReadNew> orderDtoReadNewList = orderService.showAllNewOrders();
-        OrderDtoReadNew orderDtoReadNew = orderDtoReadNewList.get(0);
+        //when
+        List<OrderReadNewDto> orderDtoReadNewList = orderService.showAllNewOrders();
+
+        //then
+        OrderReadNewDto orderDtoReadNew = orderDtoReadNewList.get(0);
         String readCargoName = orderDtoReadNew.getCargo().getName();
-        OrderDtoReadNew orderDtoReadNew1 = orderDtoReadNewList.get(1);
+        OrderReadNewDto orderDtoReadNew1 = orderDtoReadNewList.get(1);
         String readCargo1Name = orderDtoReadNew1.getCargo().getName();
-        OrderDtoReadNew orderDtoReadNew2 = orderDtoReadNewList.get(2);
+        OrderReadNewDto orderDtoReadNew2 = orderDtoReadNewList.get(2);
         String readCargo2Name = orderDtoReadNew2.getCargo().getName();
         Assert.assertSame(readCargoName, "cukier");
         Assert.assertSame(readCargo1Name, "melasa");
@@ -145,12 +156,15 @@ public class OrderServiceTest {
 
     @Test
     public void shouldShowNewOrderById() {
+        //given
         Order order = new Order();
         order.setId(3L);
         given(orderRepository.findById(3L)).willReturn(Optional.of(order));
 
-        OrderDtoReadNew foundOrderDtoReadNew = orderService.showNewOrderById(3L).orElseThrow();
+        //when
+        OrderReadNewDto foundOrderDtoReadNew = orderService.showNewOrderById(3L).orElseThrow();
 
+        //then
         Assert.assertSame(order.getId(), foundOrderDtoReadNew.getId());
 
     }

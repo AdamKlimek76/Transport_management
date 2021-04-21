@@ -68,10 +68,11 @@ public class UserServiceTest {
     @Test
     public void shouldShowAll() {
         List<User>users=List.of(new User(), new User(), new User());
-
         Mockito.when(userRepository.findAll()).thenReturn(users);
 
+
         List<User>foundUsers=userService.showAll();
+
 
         Assertions.assertThat(foundUsers).containsAll(users);
     }
@@ -81,24 +82,28 @@ public class UserServiceTest {
         User user = new User();
         user.setId(5L);
         user.setLastName("Kowalski");
-
         given(userRepository.findById(5L)).willReturn(Optional.of(user));
 
-        User foundUser=userService.showById(5L);
-        String foundUserLastName=foundUser.getLastName();
 
+        User foundUser=userService.showById(5L);
+
+
+        String foundUserLastName=foundUser.getLastName();
         Assert.assertSame(foundUserLastName, "Kowalski");
     }
 
     @Test(expected =EntityNotFoundException.class)
     public void shouldShowExceptionsIfUserDoesntExist(){
+        //given
         User user = new User();
         user.setId(5L);
         user.setLastName("Kowalski");
-
         given(userRepository.findById(15L)).willReturn(Optional.ofNullable(null));
 
+        //when
         User foundUser=userService.showById(15L);
+
+        //then Exception
 
     }
 }

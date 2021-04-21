@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class OrderDtoNew {
+public class OrderNewDto {
 
     private Long id;
 

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.dto.OrderDtoNew;
-import pl.coderslab.dtoread.OrderDtoReadNew;
+import pl.coderslab.dto.OrderNewDto;
+import pl.coderslab.dtoread.OrderReadNewDto;
 import pl.coderslab.model.Cargo;
 import pl.coderslab.model.LoadingPlace;
 import pl.coderslab.model.Order;
@@ -39,19 +39,19 @@ public class OrderController {
 
     @GetMapping("/all")
     public String showAllNewOrders(Model model) {
-        List<OrderDtoReadNew> newOrders = orderService.showAllNewOrders();
+        List<OrderReadNewDto> newOrders = orderService.showAllNewOrders();
         model.addAttribute("newOrders", newOrders);
         return "newOrderAll";
     }
 
     @GetMapping("/add")
     String showAddNewOrderForm(Model model) {
-        model.addAttribute("newOrder", new OrderDtoNew());
+        model.addAttribute("newOrder", new OrderNewDto());
         return "newOrderFormAdd";
     }
 
     @PostMapping("/add")
-    public String addNewOrder(@Valid OrderDtoNew newOrder, BindingResult bindingResult) {
+    public String addNewOrder(@Valid OrderNewDto newOrder, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "newOrderFormAdd";
@@ -69,7 +69,7 @@ public class OrderController {
 
     @PostMapping("/edit")
     public String editNewOrder(@ModelAttribute("editNewOrder")
-                               @Valid OrderDtoReadNew editNewOrder, BindingResult bindingResult) {
+                               @Valid OrderReadNewDto editNewOrder, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "newOrderEdit";
@@ -86,7 +86,7 @@ public class OrderController {
 
     @GetMapping("/detail/{id}")
     public String showOrderDetails(@PathVariable Long id, Model model){
-        OrderDtoReadNew order = orderService.showNewOrderById(id).orElseThrow(EntityExistsException::new);
+        OrderReadNewDto order = orderService.showNewOrderById(id).orElseThrow(EntityExistsException::new);
         model.addAttribute("orderDetails", order);
         return "newOrderDetails";
     }

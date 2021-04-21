@@ -29,14 +29,14 @@ public class CargoController {
     public String showAllCargos(Model model) {
         List<Cargo> cargos = cargoService.showAll();
         model.addAttribute("cargos", cargos);
-        log.info("Test loga na cargo");
+        log.debug("Test loga na cargo");
         return "cargoAll";
     }
 
     @GetMapping("/add")
     String showAddCargoForm(Model model) {
         model.addAttribute("cargo", new Cargo());
-        log.info("Test loga na dodawaniu");
+        log.debug("Test loga na dodawaniu");
         return "cargoFormAdd";
     }
 
