@@ -268,7 +268,7 @@ public class OrderService implements CrudService<Order>, OrdersService {
 
         return foundOrdersDto.stream()
                 .filter(entity->entity.getStringToSearchBookedOrders().contains(searchedText.toLowerCase()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
 
     }
 
@@ -291,6 +291,6 @@ public class OrderService implements CrudService<Order>, OrdersService {
                         entity.getDriver(),
                         entity.getSemitrailer(),
                         entity.getTruck()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 }

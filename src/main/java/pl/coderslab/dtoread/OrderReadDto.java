@@ -69,10 +69,6 @@ public class OrderReadDto {
         this.truck = truck;
     }
 
-    public OrderReadDto() {
-    }
-
-    ;
 
     public Long getId() {
         return id;

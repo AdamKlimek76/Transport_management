@@ -45,9 +45,21 @@ public class SemitrailerServiceTest {
 
 
         verify(semitrailerRepository).save(argumentCaptor.capture());
+        Long id=semitrailer.getId();
+        Long savedId=argumentCaptor.getValue().getId();
         String brand=semitrailer.getBrand();
         String savedBrand=argumentCaptor.getValue().getBrand();
+        Long productionYear=semitrailer.getProductionYear();
+        Long savedProductionYear=argumentCaptor.getValue().getProductionYear();
+        String registerNumber=semitrailer.getRegisterNumber();
+        String savedRegisterNumber=argumentCaptor.getValue().getRegisterNumber();
+        String type = semitrailer.getType();
+        String savedType=argumentCaptor.getValue().getType();
+        Assertions.assertThat(id).isEqualTo(savedId);
         Assertions.assertThat(brand).isEqualTo(savedBrand);
+        Assertions.assertThat(productionYear).isEqualTo(savedProductionYear);
+        Assertions.assertThat(registerNumber).isEqualTo(savedRegisterNumber);
+        Assertions.assertThat(type).isEqualTo(savedType);
 
     }
 

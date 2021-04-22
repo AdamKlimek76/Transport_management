@@ -59,7 +59,8 @@ public class OrderReadNewDto {
         this.cargo = cargo;
     }
 
-    public OrderReadNewDto(){};
+
+    public OrderReadNewDto(){}
 
     public Long getId() {
         return id;

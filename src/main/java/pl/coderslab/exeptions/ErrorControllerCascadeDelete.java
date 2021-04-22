@@ -18,7 +18,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 public class ErrorControllerCascadeDelete {
 
 
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    @ExceptionHandler(CouldNotDeleteCascadeException.class)
     @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
     public String handleExceptionIfTryingCascadeDelete(Exception exeption) {

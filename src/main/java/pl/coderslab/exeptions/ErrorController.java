@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ErrorController {
 
-    @ExceptionHandler(RuntimeException.class)
+    //@ExceptionHandler(RuntimeException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
     public String handleOtherExceptions(HttpServletRequest req, Exception exception) {

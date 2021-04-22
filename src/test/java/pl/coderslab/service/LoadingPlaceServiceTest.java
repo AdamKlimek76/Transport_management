@@ -1,6 +1,7 @@
 package pl.coderslab.service;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -29,16 +30,16 @@ public class LoadingPlaceServiceTest {
     @Test
     public void shouldAdd() {
         //given
-        LoadingPlace loadingPlace = new LoadingPlace("firma", "43-433", "Strumień", "Strumień", "Polska", "firmatestowa");
-        loadingPlace.setId(2L);
-        given(loadingPlaceRepositoryMock.findById(2L)).willReturn(Optional.of(loadingPlace));
+        LoadingPlace loadingPlace = new LoadingPlace();
+        loadingPlace.setCompany("ABC");
+        ArgumentCaptor<LoadingPlace>argumentCaptor=ArgumentCaptor.forClass(LoadingPlace.class);
 
         //when
         loadingPlaceService.add(loadingPlace);
 
         //then
-        LoadingPlace addedLoadingPlace = loadingPlaceService.showById(2L);
-        assertSame(addedLoadingPlace, loadingPlace);
+        Mockito.verify(loadingPlaceRepositoryMock).save(argumentCaptor.capture());
+        Assert.assertSame(loadingPlace.getCompany(), argumentCaptor.getValue().getCompany());
     }
 
 
@@ -48,23 +49,24 @@ public class LoadingPlaceServiceTest {
         LoadingPlace loadingPlace = new LoadingPlace();
         loadingPlace.setId(5L);
         loadingPlace.setAlias("Strzelin");
-        loadingPlace.setCompany("Cukrownia Strzelin");
+        loadingPlace.setCompany("Cukrownia");
         loadingPlace.setCountry("Polska");
-        loadingPlace.setPostCode("11-111");
-        loadingPlace.setPost("Strzelin");
-        loadingPlace.setPlace("Strzelin");
         ArgumentCaptor<LoadingPlace> loadingPlaceArgumentCaptor = ArgumentCaptor.forClass(LoadingPlace.class);
-        given(loadingPlaceRepositoryMock.findById(5L)).willReturn(Optional.of(loadingPlace));
 
         //when
         loadingPlaceService.add(loadingPlace);
 
         //then
         verify(loadingPlaceRepositoryMock).save(loadingPlaceArgumentCaptor.capture());
-        LoadingPlace addedLoadingPlace = loadingPlaceService.showById(5L);
-        String alias = addedLoadingPlace.getAlias();
+        Long idCaptured=loadingPlaceArgumentCaptor.getValue().getId();
         String aliasCaptured = loadingPlaceArgumentCaptor.getValue().getAlias();
-        assertSame(alias, aliasCaptured);
+        String companyCaptured=loadingPlaceArgumentCaptor.getValue().getCompany();
+        String countryCaptured=loadingPlaceArgumentCaptor.getValue().getCountry();
+        assertSame(5L, idCaptured);
+        assertSame("Strzelin", aliasCaptured);
+        assertSame("Cukrownia", companyCaptured);
+        assertSame("Polska", countryCaptured);
+
     }
 
     @Test
