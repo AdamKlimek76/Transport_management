@@ -35,6 +35,14 @@
     </tr>
     <tr>
         <td>
+            <a href="${pageContext.request.contextPath}/user/reports/sms/all">
+                <h2><span>Zestawienia</span></h2>
+            </a>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
             <a href="${pageContext.request.contextPath}/admin/permission/all" r>
                 <h2><span>Użytkownicy</span></h2>
             </a>

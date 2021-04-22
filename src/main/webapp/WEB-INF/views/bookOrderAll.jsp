@@ -30,7 +30,8 @@
             <th width="70" bgcolor="gray"><span><i>Ciągnik</i></span></th>
             <th width="70" bgcolor="gray"><span><i>Naczepa</i></span></th>
             <th width="100" bgcolor="gray"><span><i>Edycja</i></span></th>
-            <th width="100" bgcolor="gray"><span><i>Usuwanie</i></span></th>
+            <th width="70" bgcolor="gray"><span><i>Usuw</i></span></th>
+            <th width="70" bgcolor="gray"><span><i>Sms</i></span></th>
 
             </thead>
             <tbody>
@@ -51,6 +52,8 @@
                     <td><a href='<c:url value="/user/order/newOrder/editBooked/${bookedOrder.id}" />'>Edytuj</a><br></td>
                     </td>
                     <td><a href='<c:url value="/user/order/newOrder/deleteBooked/${bookedOrder.id}" />'>Usuń</a><br></td>
+                    </td>
+                    <td><a href='<c:url value="/user/reports/sms/add/${bookedOrder.id}" />'>Wyślij</a><br></td>
                     </td>
                 </tr>
             </c:forEach>
