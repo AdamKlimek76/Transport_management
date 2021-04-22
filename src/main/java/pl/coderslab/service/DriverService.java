@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DriverService implements MethodsService<Driver> {
+public class DriverService implements CrudService<Driver> {
 
     private final DriverRepository driverRepository;
 

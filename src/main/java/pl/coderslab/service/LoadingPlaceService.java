@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class LoadingPlaceService implements MethodsService<LoadingPlace> {
+public class LoadingPlaceService implements CrudService<LoadingPlace> {
 
     private final LoadingPlaceRepository loadingPlaceRepository;
 

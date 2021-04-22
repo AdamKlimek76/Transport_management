@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CargoService implements MethodsService<Cargo>{
+public class CargoService implements CrudService<Cargo> {
 
     private final CargoRepository cargoRepository;
 
