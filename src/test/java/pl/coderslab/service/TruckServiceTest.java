@@ -33,15 +33,15 @@ public class TruckServiceTest {
     public void shouldAdd() {
         Truck truck=new Truck();
         truck.setBrand("Volvo");
-
         ArgumentCaptor<Truck>argumentCaptor=ArgumentCaptor.forClass(Truck.class);
+
+
         truckService.add(truck);
 
-        Mockito.verify(truckRepository).save(argumentCaptor.capture());
 
+        Mockito.verify(truckRepository).save(argumentCaptor.capture());
         String brand=truck.getBrand();
         String addedBrand=argumentCaptor.getValue().getBrand();
-
         Assertions.assertThat(brand).isEqualTo(addedBrand);
 
     }
@@ -51,15 +51,15 @@ public class TruckServiceTest {
         Truck truck=new Truck();
         truck.setBrand("Volvo");
         truck.setRegisterNumber("SBI3498");
-
         ArgumentCaptor<Truck>argumentCaptor=ArgumentCaptor.forClass(Truck.class);
+
+
         truckService.update(truck);
 
-        Mockito.verify(truckRepository).save(argumentCaptor.capture());
 
+        Mockito.verify(truckRepository).save(argumentCaptor.capture());
         String registerNumber=truck.getRegisterNumber();
         String updatedRegisterNumber=argumentCaptor.getValue().getRegisterNumber();
-
         Assertions.assertThat(registerNumber).isEqualTo(updatedRegisterNumber);
     }
 
@@ -69,15 +69,15 @@ public class TruckServiceTest {
         truck.setBrand("Volvo");
         truck.setRegisterNumber("SBI3498");
         truck.setId(20L);
-
         ArgumentCaptor<Long>argumentCaptor=ArgumentCaptor.forClass(Long.class);
+
+
         truckService.delete(truck.getId());
 
-        Mockito.verify(truckRepository).deleteById(argumentCaptor.capture());
 
+        Mockito.verify(truckRepository).deleteById(argumentCaptor.capture());
         Long truckId =truck.getId();
         Long deletedTruckId=argumentCaptor.getValue();
-
         Assertions.assertThat(truckId).isEqualTo(deletedTruckId);
     }
 
@@ -87,10 +87,11 @@ public class TruckServiceTest {
         trucks.add(new Truck());
         trucks.add(new Truck());
         trucks.add(new Truck());
-
         Mockito.when(truckRepository.findAll()).thenReturn(trucks);
 
+
         List<Truck>foundTrucks=truckService.showAll();
+
 
         Assertions.assertThat(foundTrucks).containsAll(trucks);
 
@@ -100,22 +101,26 @@ public class TruckServiceTest {
     public void shouldShowByIdWhenTruckExist() {
         Truck truck = new Truck();
         truck.setId(100L);
-
         given(truckRepository.findById(100L)).willReturn(Optional.of(truck));
 
+
         Truck foundTruck=truckService.showById(100L);
+
 
         Assert.assertSame(truck, foundTruck);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void shouldShowExceptionsWhenIdDoesntExist(){
+        //given
         Truck truck = new Truck();
         truck.setId(10L);
-
         given(truckRepository.findById(20L)).willReturn(Optional.ofNullable(null));
 
+        //when
         Truck foundTruck=truckService.showById(20L);
+
+        //given Exception
 
     }
 }

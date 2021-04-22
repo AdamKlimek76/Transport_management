@@ -34,9 +34,11 @@ public class UnloadingPlaceServiceTest {
         UnloadingPlace unloadingPlace = new UnloadingPlace();
         unloadingPlace.setAlias("Barry");
         unloadingPlace.setPlace("Łódź");
-
         ArgumentCaptor<UnloadingPlace>argumentCaptor=ArgumentCaptor.forClass(UnloadingPlace.class);
+
+
         unloadingPlaceService.add(unloadingPlace);
+
 
         Mockito.verify(unloadingPlaceRepository).save(argumentCaptor.capture());
         String alias=unloadingPlace.getAlias();
@@ -53,9 +55,11 @@ public class UnloadingPlaceServiceTest {
         UnloadingPlace unloadingPlace = new UnloadingPlace();
         unloadingPlace.setAlias("Barry");
         ArgumentCaptor<UnloadingPlace>argumentCaptor=ArgumentCaptor.forClass(UnloadingPlace.class);
-
         unloadingPlace.setAlias("CocaCola");
+
+
         unloadingPlaceService.update(unloadingPlace);
+
 
         Mockito.verify(unloadingPlaceRepository).save(argumentCaptor.capture());
         String updatedAlias=argumentCaptor.getValue().getAlias();
@@ -70,7 +74,9 @@ public class UnloadingPlaceServiceTest {
         ArgumentCaptor<Long>unloadingPlaceArgumentCaptor=
                 ArgumentCaptor.forClass(Long.class);
 
+
         unloadingPlaceService.delete(1L);
+
 
         Mockito.verify(unloadingPlaceRepository).
         deleteById(unloadingPlaceArgumentCaptor.capture());
@@ -89,10 +95,12 @@ public class UnloadingPlaceServiceTest {
         unloadingPlaces.add(unloadingPlace1);
         unloadingPlaces.add(unloadingPlace2);
         unloadingPlaces.add(unloadingPlace3);
-
         Mockito.when(unloadingPlaceRepository.findAll()).thenReturn(unloadingPlaces);
 
+
         List<UnloadingPlace>allUnlodingPlaces=unloadingPlaceService.showAll();
+
+
         String place=allUnlodingPlaces.get(0).getPlace();
         String country=allUnlodingPlaces.get(1).getCountry();
         String alias=allUnlodingPlaces.get(2).getAlias();
@@ -106,21 +114,27 @@ public class UnloadingPlaceServiceTest {
     public void shouldShowByIdWhenExists() {
         UnloadingPlace unloadingPlace=new UnloadingPlace();
         unloadingPlace.setId(5L);
-
         given(unloadingPlaceRepository.findById(5L)).willReturn(Optional.of(unloadingPlace));
 
+
         UnloadingPlace foundUnloadingPlace=unloadingPlaceService.showById(5L);
+
+
         Assertions.assertThat(unloadingPlace).isEqualTo(foundUnloadingPlace);
 
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void shouldShowExceptionWhenUnloadingPlaceDoestnExist(){
+        //given
         UnloadingPlace unloadingPlace=new UnloadingPlace();
         unloadingPlace.setId(20L);
-
         given(unloadingPlaceRepository.findById(5L)).willReturn(Optional.ofNullable(null));
 
+        //when
         UnloadingPlace foundUnloadingPlace=unloadingPlaceService.showById(5L);
+
+
+        //then Exception
     }
 }

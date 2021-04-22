@@ -37,14 +37,17 @@ public class OrderServiceTest {
 
     @Test
     public void shouldDeleteIfExist() {
+        //given
         Order order = new Order();
         order.setId(10L);
         given(orderRepository.findById(10L)).
                 willReturn(Optional.of(order));
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
+        //when
         orderService.delete(10L);
 
+        //then
         Mockito.verify(orderRepository).deleteById(argumentCaptor.capture());
         Long correctIdOfDeletedOrder = argumentCaptor.getValue();
         Assertions.assertThat(correctIdOfDeletedOrder).isEqualTo(10L);
@@ -52,16 +55,21 @@ public class OrderServiceTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void shouldShowExceptionIfYouWantToDeleteNotExistingOrder() {
+        //given
         Order order = new Order();
         order.setId(10L);
         given(orderRepository.findById(20L)).
                 willReturn(Optional.ofNullable(null));
 
+        //when
         orderService.delete(20L);
+
+        //then Exception
     }
 
     @Test
     public void shouldAddNewOrder() {
+        //given
         OrderNewDto orderDtoNew = new OrderNewDto();
         orderDtoNew.setStatus("nowe");
         Cargo cargo = new Cargo();
@@ -70,8 +78,10 @@ public class OrderServiceTest {
         orderDtoNew.setLoadingPlace(loadingPlace);
         ArgumentCaptor<Order> orderArgumentCaptor = ArgumentCaptor.forClass(Order.class);
 
+        //when
         orderService.addNewOrder(orderDtoNew);
 
+        //then
         Mockito.verify(orderRepository, Mockito.times(2)).save(orderArgumentCaptor.capture());
         String addedStatus = orderArgumentCaptor.getValue().getStatus();
         Cargo addedCargo = orderArgumentCaptor.getValue().getCargo();
@@ -85,6 +95,7 @@ public class OrderServiceTest {
 
     @Test
     public void updateNewOrder() {
+        //given
         OrderReadNewDto orderDtoNew = new OrderReadNewDto();
         orderDtoNew.setStatus("nowe");
         Cargo cargo = new Cargo();
@@ -93,8 +104,10 @@ public class OrderServiceTest {
         orderDtoNew.setLoadingPlace(loadingPlace);
         ArgumentCaptor<Order> orderArgumentCaptor = ArgumentCaptor.forClass(Order.class);
 
+        //when
         orderService.updateNewOrder(orderDtoNew);
 
+        //then
         Mockito.verify(orderRepository).save(orderArgumentCaptor.capture());
         String addedStatus = orderArgumentCaptor.getValue().getStatus();
         Cargo addedCargo = orderArgumentCaptor.getValue().getCargo();
@@ -108,6 +121,7 @@ public class OrderServiceTest {
 
     @Test
     public void shouldShowAllNewOrders() {
+        //given
         Order order = new Order();
         order.setStatus("nowe");
         Cargo cargo = new Cargo();
@@ -127,7 +141,10 @@ public class OrderServiceTest {
 
         Mockito.when(orderRepository.findAllByStatus("nowe")).thenReturn(orders);
 
+        //when
         List<OrderReadNewDto> orderDtoReadNewList = orderService.showAllNewOrders();
+
+        //then
         OrderReadNewDto orderDtoReadNew = orderDtoReadNewList.get(0);
         String readCargoName = orderDtoReadNew.getCargo().getName();
         OrderReadNewDto orderDtoReadNew1 = orderDtoReadNewList.get(1);
@@ -142,12 +159,15 @@ public class OrderServiceTest {
 
     @Test
     public void shouldShowNewOrderById() {
+        //given
         Order order = new Order();
         order.setId(3L);
         given(orderRepository.findById(3L)).willReturn(Optional.of(order));
 
+        //when
         OrderReadNewDto foundOrderDtoReadNew = orderService.showNewOrderById(3L).orElseThrow();
 
+        //then
         Assert.assertSame(order.getId(), foundOrderDtoReadNew.getId());
 
     }

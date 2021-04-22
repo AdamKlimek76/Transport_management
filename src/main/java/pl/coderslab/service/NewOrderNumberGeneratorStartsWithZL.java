@@ -24,7 +24,8 @@ public class NewOrderNumberGeneratorStartsWithZL implements NewOrderNumberGenera
     @Override
     public String generateNewOrderNumber() {
         int digitsNumber = showIdOfNewOrder().toString().length();
-        int numbersOfZero = 5 - digitsNumber;
+        final int ALL_DIGITS_IN_ORDER_NUMBER = 5;
+        int numbersOfZero = ALL_DIGITS_IN_ORDER_NUMBER - digitsNumber;
         return "ZL" + "0".repeat(Math.max(0, numbersOfZero)) + showIdOfNewOrder().toString();
     }
 }

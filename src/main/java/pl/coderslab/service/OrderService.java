@@ -10,6 +10,7 @@ import pl.coderslab.dtoread.OrderReadNewDto;
 import pl.coderslab.model.Order;
 import pl.coderslab.repository.OrderRepository;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,13 +34,13 @@ public class OrderService implements CrudService<Order>, OrdersService {
 
 
     @Override
-    public void add(Order order) throws RuntimeException {
-
+    public void add(Order order) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void update(Order newOrder) throws RuntimeException {
-
+    public void update(Order newOrder) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

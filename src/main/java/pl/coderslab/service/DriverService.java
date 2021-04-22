@@ -39,8 +39,8 @@ public class DriverService implements CrudService<Driver> {
 
     @Override
     public Driver showById(long id) {
-         Optional<Driver> foundDriver = Optional.ofNullable(driverRepository.findById(id)).orElseThrow(EntityNotFoundException::new);
-         return foundDriver.orElseThrow();
+
+         return driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
 
