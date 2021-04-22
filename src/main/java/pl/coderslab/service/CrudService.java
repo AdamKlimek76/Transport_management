@@ -12,9 +12,9 @@ public interface CrudService<T> {
 
     void delete(long id);
 
-    List<T>showAll();
+    List<T> showAll();
 
-    Optional<T> showById(long id);
+    T showById(long id);
 
 
 }

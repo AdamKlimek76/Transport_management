@@ -45,7 +45,7 @@ public class TruckController {
 
     @GetMapping("/edit/{id}")
     public String editTruck(@PathVariable Long id, Model model) {
-        Truck editTruck = truckService.showById(id).orElseThrow();
+        Truck editTruck = truckService.showById(id);
         model.addAttribute("editTruck", editTruck);
         return "truckEdit";
     }

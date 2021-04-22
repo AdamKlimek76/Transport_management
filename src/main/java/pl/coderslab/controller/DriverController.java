@@ -45,7 +45,7 @@ public class DriverController{
 
     @GetMapping("/edit/{id}")
     public String editDriver(@PathVariable Long id, Model model) {
-        Driver editDriver = driverService.showById(id).orElseThrow();
+        Driver editDriver = driverService.showById(id);
         model.addAttribute("editDriver", editDriver);
         return "driverEdit";
     }

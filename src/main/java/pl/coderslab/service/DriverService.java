@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.model.Driver;
 import pl.coderslab.repository.DriverRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,10 @@ public class DriverService implements CrudService<Driver> {
     }
 
     @Override
-    public Optional<Driver> showById(long id) {
-        return driverRepository.findById(id);
+    public Driver showById(long id) {
+
+         return driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
+
+
 }

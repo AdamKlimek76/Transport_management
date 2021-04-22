@@ -46,7 +46,7 @@ public class SemitrailerController {
 
     @GetMapping("/edit/{id}")
     public String editSemitrailer(@PathVariable Long id, Model model) {
-        Semitrailer editSemitrailer = semitrailerService.showById(id).orElseThrow();
+        Semitrailer editSemitrailer = semitrailerService.showById(id);
         model.addAttribute("editSemitrailer", editSemitrailer);
         return "semitrailerEdit";
     }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.model.LoadingPlace;
 import pl.coderslab.repository.LoadingPlaceRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,8 @@ public class LoadingPlaceService implements CrudService<LoadingPlace> {
     }
 
     @Override
-    public Optional<LoadingPlace> showById(long id) {
-        return loadingPlaceRepository.findById(id);
+    public LoadingPlace showById(long id) {
+
+        return loadingPlaceRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 }

@@ -1,24 +1,27 @@
 package pl.coderslab.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pl.coderslab.dto.OrderDtoNew;
-import pl.coderslab.dtoread.OrderDtoReadNew;
+import pl.coderslab.dto.OrderNewDto;
+import pl.coderslab.dtoread.OrderReadNewDto;
 import pl.coderslab.model.Order;
 import pl.coderslab.repository.OrderRepository;
 
-import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class OrderService implements CrudService<Order>, OrderServiceMethods {
+public class OrderService implements CrudService<Order>, OrdersService {
 
 
     private final OrderRepository orderRepository;
     private final NewOrderNumberGenerator newOrderNumberGenerator;
+
+    private final static Logger log = LoggerFactory.getLogger(OrderService.class);
 
     public OrderService(OrderRepository orderRepository, NewOrderNumberGenerator newOrderNumberGenerator) {
         this.orderRepository = orderRepository;
@@ -28,17 +31,17 @@ public class OrderService implements CrudService<Order>, OrderServiceMethods {
 
     @Override
     public void add(Order order) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void update(Order newOrder) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(long id) {
-        orderRepository.findById(id).orElseThrow(EntityExistsException::new);
+        orderRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         orderRepository.deleteById(id);
 
     }
@@ -49,13 +52,14 @@ public class OrderService implements CrudService<Order>, OrderServiceMethods {
     }
 
     @Override
-    public Optional<Order> showById(long id) {
-        return orderRepository.findById(id);
+    public Order showById(long id) {
+        return orderRepository.findById(id).
+                orElseThrow(EntityNotFoundException::new);
     }
 
 
     @Override
-    public void addNewOrder(OrderDtoNew newOrder) {
+    public void addNewOrder(OrderNewDto newOrder) {
         Order orderToAdd = new Order();
         orderToAdd.setStatus("nowe");
         orderToAdd.setCreated(LocalDateTime.now());
@@ -68,13 +72,13 @@ public class OrderService implements CrudService<Order>, OrderServiceMethods {
         orderToAdd.setCargo(newOrder.getCargo());
         orderRepository.save(orderToAdd);
         orderToAdd.setOrderNumber(newOrderNumberGenerator.generateNewOrderNumber());
-        orderToAdd.setId(newOrderNumberGenerator.showIdOfNewOrder());
         orderRepository.save(orderToAdd);
+        //log.info(orderToAdd.getId().toString());
 
     }
 
     @Override
-    public void updateNewOrder(OrderDtoReadNew updatedOrder) {
+    public void updateNewOrder(OrderReadNewDto updatedOrder) {
         Order orderToUpdate = new Order();
         orderToUpdate.setId(updatedOrder.getId());
         orderToUpdate.setStatus(updatedOrder.getStatus());
@@ -94,11 +98,11 @@ public class OrderService implements CrudService<Order>, OrderServiceMethods {
     }
 
     @Override
-    public List<OrderDtoReadNew> showAllNewOrders() {
+    public List<OrderReadNewDto> showAllNewOrders() {
 
-        return orderRepository.findNewOrders()
+        return orderRepository.findAllByStatus("nowe")
                 .stream()
-                .map(entity -> new OrderDtoReadNew(
+                .map(entity -> new OrderReadNewDto(
                         entity.getId(),
                         entity.getStatus(),
                         entity.getCreated(),
@@ -115,9 +119,9 @@ public class OrderService implements CrudService<Order>, OrderServiceMethods {
     }
 
     @Override
-    public Optional<OrderDtoReadNew> showNewOrderById(long id) {
+    public Optional<OrderReadNewDto> showNewOrderById(long id) {
         return orderRepository.findById(id)
-                .map(entity -> new OrderDtoReadNew(
+                .map(entity -> new OrderReadNewDto(
                         entity.getId(),
                         entity.getStatus(),
                         entity.getCreated(),

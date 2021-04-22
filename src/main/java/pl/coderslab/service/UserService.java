@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.model.User;
 import pl.coderslab.repository.UserRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,8 +41,9 @@ public class UserService implements CrudService<User> {
     }
 
     @Override
-    public Optional<User> showById(long id) {
-        return userRepository.findById(id);
+    public User showById(long id) {
+
+        return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
 

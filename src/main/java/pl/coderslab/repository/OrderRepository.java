@@ -12,8 +12,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value="select * from orders order by id desc limit 1", nativeQuery = true)
     Optional<Order>findLastOrder();
 
-    @Query("SELECT o FROM Order o WHERE o.status LIKE 'nowe'")
-    List<Order>findNewOrders();
+    List<Order>findAllByStatus(String status);
 
 
 }

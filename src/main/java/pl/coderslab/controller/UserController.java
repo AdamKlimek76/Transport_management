@@ -45,7 +45,7 @@ public class UserController {
 
     @GetMapping("/edit/{id}")
     public String editUser(@PathVariable Long id, Model model) {
-        User editUser = userService.showById(id).orElseThrow();
+        User editUser = userService.showById(id);
         model.addAttribute("editUser", editUser);
         return "userEdit";
     }
