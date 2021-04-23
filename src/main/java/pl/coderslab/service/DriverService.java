@@ -1,10 +1,14 @@
 package pl.coderslab.service;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import pl.coderslab.exeptions.CouldNotDeleteCascadeException;
 import pl.coderslab.model.Driver;
 import pl.coderslab.repository.DriverRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +33,11 @@ public class DriverService implements CrudService<Driver> {
 
     @Override
     public void delete(long id) {
-        driverRepository.deleteById(id);
+        try {
+            driverRepository.deleteById(id);
+        } catch (DataAccessException e) {
+            throw new CouldNotDeleteCascadeException("Could not delete if used in other table");
+        }
     }
 
     @Override
@@ -40,7 +48,7 @@ public class DriverService implements CrudService<Driver> {
     @Override
     public Driver showById(long id) {
 
-         return driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return driverRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
 

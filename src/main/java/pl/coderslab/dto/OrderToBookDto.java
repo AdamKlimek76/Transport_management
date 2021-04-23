@@ -1,16 +1,14 @@
-package pl.coderslab.dtoread;
+package pl.coderslab.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import pl.coderslab.model.Cargo;
-import pl.coderslab.model.LoadingPlace;
-import pl.coderslab.model.UnloadingPlace;
+import pl.coderslab.model.*;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class OrderReadNewDto {
+public class OrderToBookDto {
 
     private Long id;
 
@@ -43,8 +41,16 @@ public class OrderReadNewDto {
     @NotNull
     private Cargo cargo;
 
+    @NotNull
+    private Driver driver;
 
-    public OrderReadNewDto(Long id, String status, LocalDateTime created, LocalDateTime updated, String orderNumber, LocalDate deliveryDate, LocalTime deliveryHour, LocalDate loadingDate, LocalTime loadingHour, LoadingPlace loadingPlace, UnloadingPlace unloadingPlace, Cargo cargo) {
+    @NotNull
+    private Semitrailer semitrailer;
+
+    @NotNull
+    private Truck truck;
+
+    public OrderToBookDto(Long id, String status, LocalDateTime created, LocalDateTime updated, String orderNumber, LocalDate deliveryDate, LocalTime deliveryHour, LocalDate loadingDate, LocalTime loadingHour, @NotNull LoadingPlace loadingPlace, @NotNull UnloadingPlace unloadingPlace, @NotNull Cargo cargo, @NotNull Driver driver, @NotNull Semitrailer semitrailer, @NotNull Truck truck) {
         this.id = id;
         this.status = status;
         this.created = created;
@@ -57,10 +63,12 @@ public class OrderReadNewDto {
         this.loadingPlace = loadingPlace;
         this.unloadingPlace = unloadingPlace;
         this.cargo = cargo;
+        this.driver = driver;
+        this.semitrailer = semitrailer;
+        this.truck = truck;
     }
 
-
-    public OrderReadNewDto(){}
+    public OrderToBookDto(){};
 
     public Long getId() {
         return id;
@@ -76,6 +84,22 @@ public class OrderReadNewDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
     }
 
     public String getOrderNumber() {
@@ -142,19 +166,48 @@ public class OrderReadNewDto {
         this.cargo = cargo;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
+    public Driver getDriver() {
+        return driver;
     }
 
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 
-    public LocalDateTime getUpdated() {
-        return updated;
+    public Semitrailer getSemitrailer() {
+        return semitrailer;
     }
 
-    public void setUpdated(LocalDateTime updated) {
-        this.updated = updated;
+    public void setSemitrailer(Semitrailer semitrailer) {
+        this.semitrailer = semitrailer;
+    }
+
+    public Truck getTruck() {
+        return truck;
+    }
+
+    public void setTruck(Truck truck) {
+        this.truck = truck;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDtoToBook{" +
+                "id=" + id +
+                ", status='" + status + '\'' +
+                ", created=" + created +
+                ", updated=" + updated +
+                ", orderNumber='" + orderNumber + '\'' +
+                ", deliveryDate=" + deliveryDate +
+                ", deliveryHour=" + deliveryHour +
+                ", loadingDate=" + loadingDate +
+                ", loadingHour=" + loadingHour +
+                ", loadingPlace=" + loadingPlace +
+                ", unloadingPlace=" + unloadingPlace +
+                ", cargo=" + cargo +
+                ", driver=" + driver +
+                ", semitrailer=" + semitrailer +
+                ", truck=" + truck +
+                '}';
     }
 }

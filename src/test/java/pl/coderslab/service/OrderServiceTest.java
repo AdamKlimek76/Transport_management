@@ -87,6 +87,7 @@ public class OrderServiceTest {
         Cargo addedCargo = orderArgumentCaptor.getValue().getCargo();
         LoadingPlace addedLoadingPlace = orderArgumentCaptor.getValue().
                 getLoadingPlace();
+
         Assert.assertSame(addedStatus, "nowe");
         Assert.assertSame(addedCargo, cargo);
         Assert.assertSame(addedLoadingPlace, loadingPlace);
@@ -112,6 +113,7 @@ public class OrderServiceTest {
         Cargo addedCargo = orderArgumentCaptor.getValue().getCargo();
         LoadingPlace addedLoadingPlace = orderArgumentCaptor.getValue().
                 getLoadingPlace();
+
         Assert.assertSame(addedStatus, "nowe");
         Assert.assertSame(addedCargo, cargo);
         Assert.assertSame(addedLoadingPlace, loadingPlace);
@@ -136,6 +138,7 @@ public class OrderServiceTest {
         cargo2.setName("mąka");
         order2.setCargo(cargo2);
         List<Order> orders = List.of(order, order1, order2);
+
         Mockito.when(orderRepository.findAllByStatus("nowe")).thenReturn(orders);
 
         //when

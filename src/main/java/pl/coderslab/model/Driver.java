@@ -18,7 +18,6 @@ public class Driver {
     @Min(2600)
     private Double salary;
 
-
     public Driver(@NotEmpty String firstName, @NotEmpty String lastName, @Size(min = 9, max = 13) String phoneNumber, @Min(2600) Double salary) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -66,6 +65,10 @@ public class Driver {
 
     public void setSalary(Double salary) {
         this.salary = salary;
+    }
+
+    public String getFullName(){
+        return lastName + " " + firstName;
     }
 
 

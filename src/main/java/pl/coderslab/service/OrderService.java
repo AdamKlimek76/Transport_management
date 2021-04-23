@@ -4,12 +4,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.coderslab.dto.OrderNewDto;
+import pl.coderslab.dto.OrderToBookDto;
+import pl.coderslab.dtoread.OrderReadDto;
 import pl.coderslab.dtoread.OrderReadNewDto;
 import pl.coderslab.model.Order;
 import pl.coderslab.repository.OrderRepository;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -135,5 +139,158 @@ public class OrderService implements CrudService<Order>, OrdersService {
                         entity.getUnloadingPlace(),
                         entity.getCargo()));
 
+    }
+
+    @Override
+    public OrderToBookDto showOrderToBookById(long id) {
+        return orderRepository.findById(id)
+                .map(entity -> new OrderToBookDto(
+                        entity.getId(),
+                        entity.getStatus(),
+                        entity.getCreated(),
+                        entity.getUpdated(),
+                        entity.getOrderNumber(),
+                        entity.getDeliveryDate(),
+                        entity.getDeliveryHour(),
+                        entity.getLoadingDate(),
+                        entity.getLoadingHour(),
+                        entity.getLoadingPlace(),
+                        entity.getUnloadingPlace(),
+                        entity.getCargo(),
+                        entity.getDriver(),
+                        entity.getSemitrailer(),
+                        entity.getTruck())).
+                        orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public void bookNewOrder(OrderToBookDto bookedOrder) {
+        Order bookedOrderToSave = new Order();
+        bookedOrderToSave.setStatus("w trakcie");
+        bookedOrderToSave.setUpdated(LocalDateTime.now());
+        bookedOrderToSave.setCargo(bookedOrder.getCargo());
+        bookedOrderToSave.setId(bookedOrder.getId());
+        bookedOrderToSave.setCreated(bookedOrder.getCreated());
+        bookedOrderToSave.setOrderNumber(bookedOrder.getOrderNumber());
+        bookedOrderToSave.setUnloadingPlace(bookedOrder.getUnloadingPlace());
+        bookedOrderToSave.setDeliveryHour(bookedOrder.getDeliveryHour());
+        bookedOrderToSave.setDeliveryDate(bookedOrder.getDeliveryDate());
+        bookedOrderToSave.setLoadingPlace(bookedOrder.getLoadingPlace());
+        bookedOrderToSave.setLoadingHour(bookedOrder.getLoadingHour());
+        bookedOrderToSave.setLoadingDate(bookedOrder.getLoadingDate());
+        bookedOrderToSave.setDriver(bookedOrder.getDriver());
+        bookedOrderToSave.setSemitrailer(bookedOrder.getSemitrailer());
+        bookedOrderToSave.setTruck(bookedOrder.getTruck());
+        orderRepository.save(bookedOrderToSave);
+
+    }
+
+    @Override
+    public List<OrderReadDto> showAllBookedOrders() {
+        List<Order>allBookedOrders=new ArrayList<>();
+        allBookedOrders=orderRepository.findAllByStatus("w trakcie");
+        return castOrderToOrderReadDto(allBookedOrders);
+    }
+
+    @Override
+    public void changeBookedOrder(OrderReadDto bookedOrder) {
+        Order changedOrder = new Order();
+        changedOrder.setStatus(bookedOrder.getStatus());
+        changedOrder.setUpdated(LocalDateTime.now());
+        changedOrder.setCargo(bookedOrder.getCargo());
+        changedOrder.setId(bookedOrder.getId());
+        changedOrder.setCreated(bookedOrder.getCreated());
+        changedOrder.setOrderNumber(bookedOrder.getOrderNumber());
+        changedOrder.setUnloadingPlace(bookedOrder.getUnloadingPlace());
+        changedOrder.setDeliveryHour(bookedOrder.getDeliveryHour());
+        changedOrder.setDeliveryDate(bookedOrder.getDeliveryDate());
+        changedOrder.setLoadingPlace(bookedOrder.getLoadingPlace());
+        changedOrder.setLoadingHour(bookedOrder.getLoadingHour());
+        changedOrder.setLoadingDate(bookedOrder.getLoadingDate());
+        changedOrder.setDriver(bookedOrder.getDriver());
+        changedOrder.setSemitrailer(bookedOrder.getSemitrailer());
+        changedOrder.setTruck(bookedOrder.getTruck());
+        orderRepository.save(changedOrder);
+    }
+
+    @Override
+    public List<OrderReadDto> showAllDoneOrders() {
+        List<Order>doneOrderList=new ArrayList<>();
+        doneOrderList=orderRepository.findAllByStatus("zrealizowane");
+        return castOrderToOrderReadDto(doneOrderList);
+    }
+
+    @Override
+    public List<OrderReadDto> showAllOrders() {
+        List<Order>allOrders=new ArrayList<>();
+        allOrders=orderRepository.findAll();
+        return castOrderToOrderReadDto(allOrders);
+    }
+
+    @Override
+    public List<OrderReadDto> sortDoneOrders(String columnName, String sortOrder) {
+
+        final String STATUS = "zrealizowane";
+
+        List<Order> sortedDoneOrders = new ArrayList<>();
+        if (columnName.equals("loadingPlace") && sortOrder.equals("ASC")) {
+            sortedDoneOrders = orderRepository.findDoneOrdersOrderByLoadingPlaceCompanyAsc(STATUS);
+        } else if (columnName.equals("loadingPlace") && sortOrder.equals("DESC")) {
+            sortedDoneOrders = orderRepository.findDoneOrdersOrderByLoadingPlaceCompanyDesc(STATUS);
+        } else if (columnName.equals("unloadingPlace") && sortOrder.equals("ASC")) {
+            sortedDoneOrders = orderRepository.findDoneOrdersOrderByUnloadingPlaceCompanyAsc(STATUS);
+        } else {
+            sortedDoneOrders = orderRepository.findDoneOrdersOrderByUnloadingPlaceCompanyDesc(STATUS);
+        }
+
+        return castOrderToOrderReadDto(sortedDoneOrders);
+
+    }
+
+    @Override
+    public List<OrderReadDto> searchDoneOrders(String columnName, String searchedText) {
+
+        final String STATUS = "zrealizowane";
+
+        List<Order> searchedDoneOrders = new ArrayList<>();
+        if (columnName.equals("driver")) {
+            searchedDoneOrders = orderRepository.findOrdersByDriverLastName(STATUS, searchedText);
+        } else {
+            searchedDoneOrders = orderRepository.findOrdersBySemitrailerRegisterNumber(STATUS, searchedText);
+        }
+
+        return castOrderToOrderReadDto(searchedDoneOrders);
+    }
+
+    @Override
+    public List<OrderReadDto> searchInAllOrders(String searchedText) {
+        List<OrderReadDto>foundOrdersDto=castOrderToOrderReadDto(orderRepository.findAll());
+
+        return foundOrdersDto.stream()
+                .filter(entity->entity.getStringToSearchBookedOrders().contains(searchedText.toLowerCase()))
+                .collect(Collectors.toUnmodifiableList());
+
+    }
+
+    private List<OrderReadDto>castOrderToOrderReadDto(List<Order>orders){
+        return orders
+                .stream()
+                .map(entity -> new OrderReadDto(
+                        entity.getId(),
+                        entity.getStatus(),
+                        entity.getCreated(),
+                        entity.getUpdated(),
+                        entity.getOrderNumber(),
+                        entity.getDeliveryDate(),
+                        entity.getDeliveryHour(),
+                        entity.getLoadingDate(),
+                        entity.getLoadingHour(),
+                        entity.getLoadingPlace(),
+                        entity.getUnloadingPlace(),
+                        entity.getCargo(),
+                        entity.getDriver(),
+                        entity.getSemitrailer(),
+                        entity.getTruck()))
+                .collect(Collectors.toUnmodifiableList());
     }
 }
